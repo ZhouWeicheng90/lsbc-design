@@ -15,10 +15,12 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: true, usePostCSS: true })
+    // 开发中如果打开f12开发者工具 css sourceMap会引起样式错误的问题：
+    // rules: utils.styleLoaders({ sourceMap: false })
   },
   // cheap-module-eval-source-map is faster for development
   // https://webpack.js.org/configuration/devtool/#development
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-eval-source-map',  // 关掉这个source Map ,在打开开发者工具时，会引起样式无法同步的问题
   entry: {
     app: './dev-test/main.js'
   },

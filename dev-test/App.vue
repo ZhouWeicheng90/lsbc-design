@@ -9,14 +9,14 @@
     <hr />
     <br />
     <Button @click="upload1">上传列表21</Button>
-    <!-- <MobilePreview>hello world!</MobilePreview>
+    <MobilePreview style="margin-left:22px">hello 00 world!</MobilePreview>
     <br />
-    <br /> -->
+    <br />
   </div>
 </template>
 
 <script>
-import { UploadService as sFn, test } from "../src/service";
+import { UploadService as sFn, test } from "../dist/service";
 export default {
   name: "App",
   data() {

@@ -1,5 +1,11 @@
-import uploadService from './components/qiniuUploadService'
-// export { UploadService };
+import UploadService from './components/qiniuUploadService'
 
-export let test = 'test export'
-export let UploadService = uploadService
+/**
+ * 不能像下面这样导出，否则打包dist后，无法识别：
+ * export let test = 'test------export'
+ * export let UploadService = uploadService
+ */
+export default {
+    UploadService,
+    test: 'test------export'
+}

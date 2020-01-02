@@ -81,16 +81,26 @@ export default {
       }
     },
     reRender() {
+      // step1: 由输入生成参数
       this.deviceHeight = (+this.inDH || 1920) / (+this.inPR || 2);
       this.deviceWidth = (+this.inDW || 1200) / (+this.inPR || 2);
       this.width = +this.inW || 350;
+      this.deviceFontSize = +this.inFontSize || 16;
+      // step2：校验适配，避免异常情况
+      if (this.deviceWidth < 100) {
+        this.deviceWidth = 100;
+      }
+      if (this.deviceHeight < 100) {
+        this.deviceHeight = 100;
+      }
       // 预览宽度比实际宽度：只能缩小，不能放大：
       if (this.width > this.deviceWidth) {
         this.width = this.deviceWidth;
       }
+      
+      // step3：开始计算：
       this.height = (this.width * this.deviceHeight) / this.deviceWidth;
-      this.scale = this.width / this.deviceWidth;
-      this.deviceFontSize = +this.inFontSize || 16;
+      this.scale = this.width / this.deviceWidth;      
       this.$emit("change-screen", {
         width: this.deviceWidth,
         height: this.deviceHeight
