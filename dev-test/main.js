@@ -4,13 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import iView from 'view-design';
 import 'view-design/dist/styles/iview.css';
-import plugin from "../dist";
+
+// 下面的引入 二选一：
+// import plugin from "../dist";
+// Vue.use(plugin)
+Vue.component('MobilePreview', () => import('../src/components/MobilePreview'))
+Vue.component('ImgSelect', () => import('../src/components/ImgSelect'))
+
+
+
 Vue.use(iView);
-Vue.use(plugin)
-
 Vue.config.productionTip = false
-
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   components: { App },

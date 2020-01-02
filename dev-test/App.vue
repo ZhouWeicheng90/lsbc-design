@@ -9,11 +9,14 @@
     <hr />
     <br />
     <Button @click="upload1">上传列表21</Button>
+    <!-- <MobilePreview>hello world!</MobilePreview>
+    <br />
+    <br /> -->
   </div>
 </template>
 
 <script>
-import { upload as sFn } from "../dist/service";
+import { UploadService as sFn, test } from "../src/service";
 export default {
   name: "App",
   data() {
@@ -44,9 +47,10 @@ export default {
       return -1;
     },
     async upload1() {
-      console.log(this.imgList1);
-      // let mediaType = 1;
-      // let s = new sFn("getTokenFn", "getUrlFn", mediaType);
+      console.log(test)
+      // console.log(this.imgList1);
+      let mediaType = 1;
+      let s = new sFn("getTokenFn", "getUrlFn", mediaType);
       // let list = this.imgList1.filter(item => item.file);
       // await s.uploadMutiple(list, (res, item) => {
       //   item.imgUrl = res.url;
@@ -54,7 +58,7 @@ export default {
       // })
       //
 
-      // s.uploadOne(this.imgList1[0].file).then(res => {});
+      s.uploadOne(this.imgList1[0].file).then(res => {});
     }
   },
   components: {}

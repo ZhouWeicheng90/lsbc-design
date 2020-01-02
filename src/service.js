@@ -1,2 +1,5 @@
-import upload from './components/qiniuUpload'
-export default { upload };
+import uploadService from './components/qiniuUploadService'
+// export { UploadService };
+
+export let test = 'test export'
+export let UploadService = uploadService
