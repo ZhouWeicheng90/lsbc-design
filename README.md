@@ -1,4 +1,4 @@
-# lsbc-upload-batch
+# lsbc-design
 
 > @深圳市蓝色冰川教育科技有限公司
 
@@ -18,5 +18,4 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
- 可以考虑替代view-design，基于view-design开发
+

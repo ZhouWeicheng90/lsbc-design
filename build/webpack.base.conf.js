@@ -19,7 +19,7 @@ const vueLoaderConfig = {
    * script中：
    *  this.myImage=require('../assets/imgs/img01.png')
    * 
-   * 添加这个配置后
+   * 添加这个配置后，可以直接这样：
    * <img src="../assets/imgs/img01.png">
    */
   transformToRequire: {
