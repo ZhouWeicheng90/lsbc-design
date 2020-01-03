@@ -4,9 +4,13 @@
       <img :src="reviewImgUrl" style="width: 100%" />
     </Modal>
     <div v-for="(item, ind) in imgList" :key="ind" style="display:inline-block">
-      <div class="demo-upload-list" v-if="item.url">
-        <img :src="item.url" />
-        <div class="demo-upload-list-cover">
+      <div
+        class="demo-img"
+        v-if="item.url"
+        :class="equalProportion?'equal-ratio':'full-parent'"
+        :style="{backgroundImage:`url(${item.url})`}"
+      >
+        <div class="demo-img-cover">
           <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
           <Poptip title="确定删除吗？" confirm transfer @on-ok="handleRemove(ind)">
             <Icon type="ios-trash-outline"></Icon>
@@ -14,6 +18,7 @@
         </div>
       </div>
     </div>
+
     <Upload
       ref="upload"
       :show-upload-list="false"
@@ -64,7 +69,14 @@ export default {
       type: Boolean
     },
     hasPlace: {
-      // 图片放置是否禁用指定位置
+      default: true,
+      type: Boolean
+    },
+    showCompressLog: {
+      default: false,
+      type: Boolean
+    },
+    equalProportion: {
       default: false,
       type: Boolean
     }
@@ -107,6 +119,7 @@ export default {
           this.imgList[ind].url = this.loading_img_flag;
           this.imgList[ind].file = file;
           this.imgList[ind].key = "";
+          this.$forceUpdate();
           if (!this.isUploading) {
             this.isUploading = true;
             setTimeout(() => {
@@ -117,36 +130,6 @@ export default {
         }
       }
       return false;
-    },
-
-    /**
-     * @param {File} file
-     */
-    compressAndAddIndex(file, ind, changeInds) {
-      const _this = this;
-      return new Promise(resolve => {
-        new ImageCompressor(file, {
-          quality: 0.4,
-          success: newFile => {
-            let imgObj = _this.imgList[ind];
-            const reader = new FileReader();
-            reader.readAsDataURL(newFile);
-            reader.onload = () => {
-              imgObj.url = reader.result;
-              imgObj.key = "";
-              imgObj.file = newFile;
-
-              changeInds.push(ind);
-              _this.$forceUpdate();
-              resolve();
-            };
-          },
-          error(err) {
-            console.error(err.message);
-            resolve();
-          }
-        });
-      });
     },
 
     initImages() {
@@ -164,12 +147,54 @@ export default {
           this.notFull = this.imgList.some(imgObj => !imgObj.url);
         }
       });
+    },
+
+    /**
+     * @param {File} file
+     */
+    compressAndAddIndex(file, ind, changeInds) {
+      const _this = this;
+      return new Promise(resolve => {
+        new ImageCompressor(file, {
+          quality: 0.4,
+          maxWidth: 1200,
+          success: newFile => {
+            let imgObj = _this.imgList[ind];
+            const reader = new FileReader();
+            reader.readAsDataURL(newFile);
+            reader.onload = () => {
+              imgObj.url = reader.result;
+              imgObj.key = "";
+              imgObj.file = newFile;
+
+              changeInds.push(ind);
+              _this.$forceUpdate();
+              resolve();
+              if (this.showCompressLog) {
+                console.log(
+                  file.name +
+                    ": 压缩前 " +
+                    (file.size >> 10) +
+                    "KB  压缩后 " +
+                    (newFile.size >> 10) +
+                    "KB  压缩比率 " +
+                    (newFile.size / file.size).toFixed(6)
+                );
+              }
+            };
+          },
+          error(err) {
+            console.error(err.message);
+            resolve();
+          }
+        });
+      });
     }
   },
   beforeMount() {
     if (!this.hasPlace && this.hiddeSelectWhenFull) {
       throw new Error(
-        `you must set prop 'hasPlace = true' when using 'hiddeSelectWhenFull = true'!`
+        `you must not set prop 'hasPlace = false' when using 'hiddeSelectWhenFull = true'!`
       );
     }
   },
@@ -181,49 +206,46 @@ export default {
 };
 </script>
 
- <style scoped>
-.demo-upload-list {
-  display: inline-block;
+ <style scoped lang='scss'>
+.demo-img {
   width: 60px;
   height: 60px;
-  text-align: center;
-  line-height: 60px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 10%;
+  box-shadow: 0 0 0 1px rgba($color: #bbb, $alpha: 0.4) inset;
   overflow: hidden;
-  background: #fff;
+  margin-right: 5px;
   position: relative;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  margin-right: 4px;
 }
-.demo-upload-list img {
-  width: 100%;
-  height: 100%;
-}
-.demo-upload-list-cover {
-  display: none;
+.demo-img-cover {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  visibility: hidden;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.6);
-}
-.uploaded {
-  width: 60px;
-  height: 60px;
-}
-.uploaded-img {
-  width: 100%;
-  height: 100%;
-}
-.demo-upload-list:hover .demo-upload-list-cover {
-  display: block;
-}
-.demo-upload-list-cover i {
-  color: #fff;
   font-size: 20px;
-  cursor: pointer;
-  margin: 0 2px;
+  background: rgba(0, 0, 0, 0.5);
+  i {
+    color: #ddd;
+    cursor: pointer;
+  }
+  i:hover {
+    color: #fff;
+  }
+}
+.demo-img:hover .demo-img-cover {
+  visibility: visible;
+}
+.full-parent {
+  background-size: 100% 100%;
+}
+.equal-ratio {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>

@@ -1,11 +1,10 @@
 <template>
   <div>
-      <!-- 默认批量数量无限的选择图片，删除后再上传，会在后面追加，前面不会存在空的位置 -->
     <ImgSelect :imgList="imgList1" />
-    <!-- 必须指定位置，依次 -->
-    <ImgSelect :imgList="imgList2" hasPlace />
-    <ImgSelect :imgList="imgList3" hiddeSelectWhenFull hasPlace />
+    <ImgSelect :imgList="imgList2" hiddeSelectWhenFull equalProportion />
+    <ImgSelect :imgList="imgList3" :hasPlace="false" />
     <ImgSelect :imgList="imgList4" :matchFn="matchFn" />
+    <ImgSelect :imgList="imgList5" :matchFn="()=>0" showCompressLog />
   </div>
 </template>
 
@@ -13,10 +12,11 @@
 export default {
   data() {
     return {
-      imgList1: [],
+      imgList1: [{}, {}, {}, {}],
       imgList2: [{}, {}, {}, {}],
-      imgList3: [{}, {}, {}, {}],
-      imgList4: [{}, {}, {}, {}, {}]
+      imgList3: [],
+      imgList4: [{}, {}, {}, {}, {}],
+      imgList5: [{}]
     };
   },
   methods: {
