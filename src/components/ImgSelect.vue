@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <Modal v-model="modal4delConfirm" title="确定删除" @on-ok="handleRemove(delIndex)">
-      <span>确定要删除吗？？？</span>
-    </Modal>
+  <div v-show="hasPlace||!hiddeSelectWhenFull">
     <Modal title="图片预览" v-model="modal4preview">
       <img :src="reviewImgUrl" style="width: 100%" />
     </Modal>
@@ -11,7 +8,9 @@
         <img :src="item.url" />
         <div class="demo-upload-list-cover">
           <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
-          <Icon type="ios-trash-outline" @click.native="confirmRemove(ind)"></Icon>
+          <Poptip title="确定删除吗？" confirm transfer @on-ok="handleRemove(ind)">
+            <Icon type="ios-trash-outline"></Icon>
+          </Poptip>
         </div>
       </div>
     </div>
@@ -19,16 +18,13 @@
       ref="upload"
       :show-upload-list="false"
       :format="['jpg','jpeg','png']"
-      :max-size="2048"
-      :on-format-error="handleFormatError"
-      :on-exceeded-size="handleMaxSize"
       :before-upload="handleBeforeUpload"
       multiple
       type="drag"
       action="/common/content/picture/upload"
       style="display: inline-block;width:58px;"
       accept=".jpg, .jpeg, .png"
-      v-show="notFull||!noSelectWhenFull"
+      v-show="notFull||!hiddeSelectWhenFull"
     >
       <div style="width: 58px;height:58px;line-height: 58px;">
         <Icon type="ios-camera" size="20"></Icon>
@@ -43,36 +39,46 @@ export default {
     imgList: {
       type: Array
     },
-    matchListFn: {
+    matchFn: {
       default() {
-        return () => {
+        return (a, b, c, d, e, f, g, h, i, j, k) => {
           for (let i = 0; i < this.imgList.length; i++) {
             if (!this.imgList[i].url) {
               return i;
             }
           }
-          this.imgList.push({
-            url: "",
-            key: "",
-            file: null
-          });
-          return this.imgList.length - 1;
+          if (!this.hasPlace) {
+            this.imgList.push({
+              url: "",
+              key: "",
+              file: null
+            });
+            return this.imgList.length - 1;
+          }
+          return -1;
         };
       }
     },
-    noSelectWhenFull: {
-      default: false
+    hiddeSelectWhenFull: {
+      default: false,
+      type: Boolean
+    },
+    hasPlace: {
+      // 图片放置是否禁用指定位置
+      default: false,
+      type: Boolean
     }
   },
   data() {
+    const loading = "Loading";
     return {
-      modal4delConfirm: false,
-      delIndex: -1,
       reviewImgUrl: "",
       modal4preview: false,
+      notFull: true,
+
       selectedFiles: [],
       isUploading: false,
-      notFull: true
+      loading_img_flag: loading
     };
   },
   methods: {
@@ -80,53 +86,49 @@ export default {
       this.reviewImgUrl = picObj.url;
       this.modal4preview = true;
     },
-    confirmRemove(ind) {
-      this.modal4delConfirm = true;
-      this.delIndex = ind;
-    },
     handleRemove(index) {
-      this.imgList[index].url = "";
-      this.imgList[index].key = "";
-      this.imgList[index].file = undefined;
-      this.notFull = true;
-      this.$emit("imgsChange", [index]);
+      if (this.matchFn.length !== 11 || this.hasPlace) {
+        // matchFn.length 不为11 说明用户传入了匹配函数，必须是有位置的，即使设了`hasPlace = false`也无效
+        this.imgList[index].url = "";
+        this.imgList[index].key = "";
+        this.imgList[index].file = undefined;
+        this.notFull = true;
+        this.$emit("imgsChange", [index]);
+        this.$forceUpdate();
+      } else {
+        this.imgList.splice(index, 1);
+      }
     },
-    handleFormatError(file) {
-      this.$Notice.warning({
-        title: "The file format is incorrect",
-        desc:
-          "File format of " +
-          file.name +
-          " is incorrect, please select jpg or png."
-      });
-    },
-    handleMaxSize(file) {
-      this.$Notice.warning({
-        title: "Exceeding file size limit",
-        desc: "File  " + file.name + " is too large, no more than 2M."
-      });
-    },
+
     handleBeforeUpload(file) {
-      this.selectedFiles.push(file);
-      if (!this.isUploading) {
-        this.isUploading = true;
-        setTimeout(() => {
-          this.initImages(this.selectedFiles);
-          this.isUploading = false;
-          this.selectedFiles = [];
-        }, 100);
+      if (/image/.test(file.type)) {
+        let ind = this.matchFn(file, this.imgList);
+        if (ind >= 0) {
+          this.imgList[ind].url = this.loading_img_flag;
+          this.imgList[ind].file = file;
+          this.imgList[ind].key = "";
+          if (!this.isUploading) {
+            this.isUploading = true;
+            setTimeout(() => {
+              this.initImages();
+              this.isUploading = false;
+            }, 200);
+          }
+        }
       }
       return false;
     },
+
     /**
      * @param {File} file
      */
     compressAndAddIndex(file, ind, changeInds) {
+      const _this = this;
       return new Promise(resolve => {
         new ImageCompressor(file, {
           quality: 0.4,
           success: newFile => {
-            let imgObj = this.imgList[ind];
+            let imgObj = _this.imgList[ind];
             const reader = new FileReader();
             reader.readAsDataURL(newFile);
             reader.onload = () => {
@@ -135,7 +137,7 @@ export default {
               imgObj.file = newFile;
 
               changeInds.push(ind);
-              this.$forceUpdate();
+              _this.$forceUpdate();
               resolve();
             };
           },
@@ -146,17 +148,15 @@ export default {
         });
       });
     },
-    initImages(files) {
+
+    initImages() {
       let reqs = [];
       let changeInds = [];
-      files.forEach(file => {
-        let ind = this.matchListFn(file, this.imgList);
-        if (ind < 0) {
+      this.imgList.forEach((imgObj, ind) => {
+        if (imgObj.url !== this.loading_img_flag) {
           return;
         }
-        // 这里要做判断，是否覆盖！！
-
-        reqs.push(this.compressAndAddIndex(file, ind, changeInds));
+        reqs.push(this.compressAndAddIndex(imgObj.file, ind, changeInds));
       });
       Promise.all(reqs).then(() => {
         if (changeInds.length) {
@@ -164,6 +164,13 @@ export default {
           this.notFull = this.imgList.some(imgObj => !imgObj.url);
         }
       });
+    }
+  },
+  beforeMount() {
+    if (!this.hasPlace && this.hiddeSelectWhenFull) {
+      throw new Error(
+        `you must set prop 'hasPlace = true' when using 'hiddeSelectWhenFull = true'!`
+      );
     }
   },
   watch: {
