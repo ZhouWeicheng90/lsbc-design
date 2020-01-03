@@ -44,7 +44,7 @@ export default {
     imgList: {
       type: Array
     },
-    matchFn: {
+    findMatchIndex: {
       default() {
         return (a, b, c, d, e, f, g, h, i, j, k) => {
           for (let i = 0; i < this.imgList.length; i++) {
@@ -79,6 +79,14 @@ export default {
     equalProportion: {
       default: false,
       type: Boolean
+    },
+    compressMaxWidth: {
+      type: Number | String,
+      default: 1200
+    },
+    compressQuality: {
+      type: Number | String,
+      default: 0.4
     }
   },
   data() {
@@ -99,8 +107,8 @@ export default {
       this.modal4preview = true;
     },
     handleRemove(index) {
-      if (this.matchFn.length !== 11 || this.hasPlace) {
-        // matchFn.length 不为11 说明用户传入了匹配函数，必须是有位置的，即使设了`hasPlace = false`也无效
+      if (this.findMatchIndex.length !== 11 || this.hasPlace) {
+        // findMatchIndex.length 不为11 说明用户传入了匹配函数，必须是有位置的，即使设了`hasPlace = false`也无效
         this.imgList[index].url = "";
         this.imgList[index].key = "";
         this.imgList[index].file = undefined;
@@ -114,7 +122,7 @@ export default {
 
     handleBeforeUpload(file) {
       if (/image/.test(file.type)) {
-        let ind = this.matchFn(file, this.imgList);
+        let ind = this.findMatchIndex(file, this.imgList);
         if (ind >= 0) {
           this.imgList[ind].url = this.loading_img_flag;
           this.imgList[ind].file = file;
@@ -156,8 +164,8 @@ export default {
       const _this = this;
       return new Promise(resolve => {
         new ImageCompressor(file, {
-          quality: 0.4,
-          maxWidth: 1200,
+          quality: +this.compressQuality || 0.4,
+          maxWidth: +this.compressMaxWidth || 1200,
           success: newFile => {
             let imgObj = _this.imgList[ind];
             const reader = new FileReader();

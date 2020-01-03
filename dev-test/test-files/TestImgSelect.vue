@@ -3,8 +3,14 @@
     <ImgSelect :imgList="imgList1" />
     <ImgSelect :imgList="imgList2" hiddeSelectWhenFull equalProportion />
     <ImgSelect :imgList="imgList3" :hasPlace="false" />
-    <ImgSelect :imgList="imgList4" :matchFn="matchFn" />
-    <ImgSelect :imgList="imgList5" :matchFn="()=>0" showCompressLog />
+    <ImgSelect :imgList="imgList4" :findMatchIndex="matchFn" />
+    <ImgSelect
+      :imgList="imgList5"
+      :findMatchIndex="()=>0"
+      showCompressLog
+      compressQuality="0.6"
+      compressMaxWidth="2400"
+    />
   </div>
 </template>
 
