@@ -1,39 +1,34 @@
 <template>
   <div v-show="hasPlace||!hiddeSelectWhenFull">
-    <Modal title="图片预览" v-model="modal4preview">
-      <img :src="reviewImgUrl" style="width: 100%" />
+    <Modal title="图片预览" v-model="modal4preview" :width="600">
+      <img :src="reviewImgUrl" style="max-width: 100%" />
     </Modal>
-    <div v-for="(item, ind) in imgList" :key="ind" style="display:inline-block">
-      <div
-        class="demo-img"
-        v-if="item.url"
-        :class="equalProportion?'equal-ratio':'full-parent'"
-        :style="{backgroundImage:`url(${item.url})`}"
-      >
-        <div class="demo-img-cover">
-          <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
-          <Poptip title="确定删除吗？" confirm transfer @on-ok="handleRemove(ind)">
-            <Icon type="ios-trash-outline"></Icon>
-          </Poptip>
-        </div>
+
+    <div
+      v-for="(item, ind) in imgList.filter(ele=>ele.url)"
+      :key="ind"
+      class="demo-img"
+      :class="equalProportion?'equal-ratio':'full-parent'"
+      :style="{backgroundImage:`url(${item.url})`}"
+    >
+      <div class="demo-img-cover">
+        <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
+        <Poptip title="确定删除吗？" confirm transfer @on-ok="handleRemove(ind)">
+          <Icon type="ios-trash-outline"></Icon>
+        </Poptip>
       </div>
     </div>
 
     <Upload
-      ref="upload"
-      :show-upload-list="false"
-      :format="['jpg','jpeg','png']"
       :before-upload="handleBeforeUpload"
       multiple
+      action=""
       type="drag"
-      action="/common/content/picture/upload"
       style="display: inline-block;width:58px;"
-      accept=".jpg, .jpeg, .png"
+      accept="image/*"
       v-show="notFull||!hiddeSelectWhenFull"
     >
-      <div style="width: 58px;height:58px;line-height: 58px;">
-        <Icon type="ios-camera" size="20"></Icon>
-      </div>
+      <Icon style="height:58px;line-height: 58px;" type="ios-camera" size="20"></Icon>
     </Upload>
   </div>
 </template>
@@ -218,6 +213,7 @@ export default {
 .demo-img {
   width: 60px;
   height: 60px;
+  display: inline-block;
   border-radius: 10%;
   box-shadow: 0 0 0 1px rgba($color: #bbb, $alpha: 0.4) inset;
   overflow: hidden;
@@ -230,15 +226,11 @@ export default {
   justify-content: space-around;
 
   visibility: hidden;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: 100%;
   font-size: 20px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   i {
-    color: #ddd;
+    color: #d1d1d1;
     cursor: pointer;
   }
   i:hover {
