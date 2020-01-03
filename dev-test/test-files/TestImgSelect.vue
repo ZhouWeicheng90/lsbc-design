@@ -3,7 +3,7 @@
     <ImgSelect :imgList="imgList1" />
     <ImgSelect :imgList="imgList2" hiddeSelectWhenFull equalProportion />
     <ImgSelect :imgList="imgList3" :hasPlace="false" />
-    <ImgSelect :imgList="imgList4" :findMatchIndex="matchFn" />
+    <ImgSelect :imgList="imgList4" :findMatchIndex="matchFn" @imgsChange="imgsChange" />
     <ImgSelect
       :imgList="imgList5"
       :findMatchIndex="()=>0"
@@ -32,6 +32,9 @@ export default {
       if (this.imgList4[ind]) {
         return ind;
       }
+    },
+    imgsChange(inds){
+      console.log(inds)
     }
   }
 };

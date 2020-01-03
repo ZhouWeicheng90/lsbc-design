@@ -5,7 +5,7 @@
     </Modal>
 
     <div
-      v-for="(item, ind) in imgList.filter(ele=>ele.url)"
+      v-for="(item, ind) in (imgList||[]).filter(ele=>ele.url)"
       :key="ind"
       class="demo-img"
       :class="equalProportion?'equal-ratio':'full-parent'"
@@ -22,7 +22,7 @@
     <Upload
       :before-upload="handleBeforeUpload"
       multiple
-      action=""
+      action="x"
       type="drag"
       style="display: inline-block;width:58px;"
       accept="image/*"
@@ -147,7 +147,7 @@ export default {
       Promise.all(reqs).then(() => {
         if (changeInds.length) {
           this.$emit("imgsChange", changeInds);
-          this.notFull = this.imgList.some(imgObj => !imgObj.url);
+          this.notFull = (this.imgList || []).some(imgObj => !imgObj.url);
         }
       });
     },
@@ -203,7 +203,7 @@ export default {
   },
   watch: {
     imgList() {
-      this.notFull = this.imgList.some(imgObj => !imgObj.url);
+      this.notFull = (this.imgList || []).some(imgObj => !imgObj.url);
     }
   }
 };

@@ -18,13 +18,13 @@ function resolve(dir) {
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
-      sourceMap: true,
+      // sourceMap: true, // devtools中样式总是出现问题，先隐藏掉
       // extract: true,  // 需要去掉提取，否则需要每次重新引入样式  2/3
       usePostCSS: true
     })
   },
   // sourceMap 设为ture与否，还会影响到devtool!!
-  devtool: config.build.devtool,
+  devtool: false,//config.build.devtool, //先注掉吧
   entry: {
     index: './src/index.js',
     service: './src/service.js'
@@ -52,7 +52,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           warnings: false
         }
       },
-      sourceMap: true,
+      sourceMap: false,  // 先改为false吧
       parallel: true
     }),
     // // extract css into its own file  3/3
