@@ -9,7 +9,7 @@
       :key="ind"
       class="demo-img"
       :class="equalProportion?'equal-ratio':'full-parent'"
-      :style="{backgroundImage:`url(${item.url})`}"
+      :style="{backgroundImage:item.url==loading_img_flag?'':`url(${item.url})`}"
     >
       <div class="demo-img-cover">
         <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
@@ -47,7 +47,11 @@ export default {
               return i;
             }
           }
-          if (!this.hasPlace) {
+          let max = Math.floor(+this.maxLength || 0);         
+          if (max <= 0) {
+            max = this.hasPlace ? -1 : Number.POSITIVE_INFINITY;
+          }         
+          if (this.imgList.length < max) {
             this.imgList.push({
               url: "",
               key: "",
@@ -62,6 +66,10 @@ export default {
     hiddeSelectWhenFull: {
       default: false,
       type: Boolean
+    },
+    maxLength: {
+      default: 0,
+      type: Number | String
     },
     hasPlace: {
       default: true,
@@ -79,13 +87,14 @@ export default {
       type: Number | String,
       default: 1200
     },
+
     compressQuality: {
       type: Number | String,
       default: 0.4
     }
   },
   data() {
-    const loading = "Loading";
+    const loading = "Loading%%=";
     return {
       reviewImgUrl: "",
       modal4preview: false,
@@ -214,7 +223,7 @@ export default {
   width: 60px;
   height: 60px;
   display: inline-block;
-  border-radius: 10%;
+  border-radius: 8%;
   box-shadow: 0 0 0 1px rgba($color: #bbb, $alpha: 0.4) inset;
   overflow: hidden;
   margin-right: 5px;
