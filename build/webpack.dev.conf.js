@@ -1,54 +1,35 @@
 const path = require('path')
-const rules = require('./webpack-rules')
+const merge = require('webpack-merge')
+const baseConfig = require('./webpack.base')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const getPath = function (subpath) {
     return path.posix.resolve(__dirname, '..', subpath)
 }
-module.exports = {
+module.exports = merge(baseConfig, {
     entry: {
-        app: getPath('src/main.js')
+        app: getPath('src/docs/main.js')
     },
     output: {
-        path: getPath('dist'),
-        filename: '[name].js'
+        path: getPath('dist-docs'),
+        filename: '[name].js',
+        chunkFilename: 'js/[id].js',
     },
-    resolve: {
-        extensions: ['.js', '.vue', '.json'],
-        alias: {
-            vue$: "vue/dist/vue.esm.js",
-        }
-    },
-
-    module: {
-        rules: rules
-    },
-    // devServer: {
-    //     hot: true,
-    //     host: 'localhost',
-    //     port: 1127,
-    //     publicPath: '/',
-    //     quiet: true,
-    //     historyApiFallback: {
-    //         // 页面404 时的跳转
-    //         rewrites: [
-    //             { from: /.*/, to: getPath('index.html') },
-    //         ],
-    //     },
-    // },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: getPath('src/index.html'),
-            inject: true
+            filename: 'demo.html',
+            template: getPath('src/docs/index.html')          
         }),
+        new CleanWebpackPlugin(),
         // new FriendlyErrorsPlugin({
         //     compilationSuccessInfo: {
         //         messages: [`Your application is running here: http://localhost:1127`],
         //     },
-        //     onErrors: undefined
+        //     onErrors: 'undefined'
         // })
     ]
 
-}
+})

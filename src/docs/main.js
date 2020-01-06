@@ -6,12 +6,12 @@ import iView from 'view-design';
 import 'view-design/dist/styles/iview.css';
 
 // 下面的引入 二选一：
+// 打包测试
 // import plugin from "../dist";
-// Vue.use(plugin)
-Vue.component('MobilePreview', () => import('./deploy/components/MobilePreview'))
-Vue.component('ImgSelect', () => import('./deploy/components/ImgSelect'))
+// 开发
+import plugin from '../deploy/index'
 
-
+Vue.use(plugin)
 
 Vue.use(iView);
 Vue.config.productionTip = false

@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import TestImgSelect from "./test-files/TestImgSelect";
-import { UploadService as sFn, test } from "./deploy/service";
+import TestImgSelect from "./views/TestImgSelect";
+import { UploadService as sFn, test } from "../deploy/service";
 export default {
   name: "App",
   data() {
