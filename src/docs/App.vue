@@ -25,6 +25,18 @@ export default {
   components: { TestImgSelect, TestMobilePreview },
   methods: {},
   mounted() {
+    let s = new x.UploadService(
+      () => {
+        return { key: "abc" };
+      },
+      () => {
+        return {};
+      },
+      1
+    );
+    s.uploadMutiple([{}], () => {
+      console.log("===");
+    });
     console.log(x.test, x.UploadService);
   }
 };
