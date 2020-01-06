@@ -1,15 +1,15 @@
 <template>
-  <div id="app">
+  <div>
     <TestImgSelect />
-    <MobilePreview style="margin-left:22px">hello 00 world!</MobilePreview>
-    <br />
-    <br />
+    <TestMobilePreview />
   </div>
 </template>
 
 <script>
 import TestImgSelect from "./views/TestImgSelect";
-import { UploadService as sFn, test } from "../deploy/service";
+import TestMobilePreview from "./views/TestMobilePreview";
+// 关于服务的测试，目前请使用打包后的，具体原因就是打包兼容的问题：
+import x from "../../dist/service.js";
 export default {
   name: "App",
   data() {
@@ -22,21 +22,13 @@ export default {
       imgList2: [{ url: "" }, { url: "" }, { url: "" }]
     };
   },
-  components: { TestImgSelect },
+  components: { TestImgSelect, TestMobilePreview },
   methods: {},
   mounted() {
-    console.log(test, sFn);
+    console.log(x.test, x.UploadService);
   }
 };
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

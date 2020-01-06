@@ -1,5 +1,9 @@
 <template>
-  <div>TestMobilePreview</div>
+  <div>
+    <MobilePreview style="margin-left:22px">hello 00 world!</MobilePreview>
+    <MobilePreview style="margin-left:22px">hello 00 world!</MobilePreview>
+    <MobilePreview style="margin-left:22px">hello 00 world!</MobilePreview>
+  </div>
 </template>
 
 <script>

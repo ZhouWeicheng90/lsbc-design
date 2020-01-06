@@ -1,4 +1,4 @@
-import UploadService from './components/qiniuUploadService'
+import uploadService from './components/qiniuUploadService'
 
 /**
  * 开发环境要像这样导出：
@@ -15,7 +15,7 @@ import UploadService from './components/qiniuUploadService'
 // export let test = 'test------export'
 // export let UploadService = uploadService
 export default {
-    UploadService,
+    UploadService: uploadService,
     test: 'test------export'
-
 }
+

@@ -9,7 +9,7 @@ import 'view-design/dist/styles/iview.css';
 // 打包测试
 // import plugin from "../dist";
 // 开发
-import plugin from '../deploy/index'
+import plugin from '../../dist/index'
 
 Vue.use(plugin)
 
