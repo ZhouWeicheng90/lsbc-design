@@ -12,6 +12,7 @@
   "author": "周维成",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "webp":"webpack --config build/webpack.dev.conf.js",
     "build": "node build/build.js",
     "deploy": "npm run build && npm publish"
   },
