@@ -16,11 +16,16 @@
 
     <div class="intoolbar">
       <Icon v-if="deviceSetable" type="ios-cog" class="icon-btn" @click.stop="showSetting=true" />
-      <Icon v-else type="md-refresh" class="icon-btn" @click="reRender()" />
+      <Icon v-else type="md-refresh" class="icon-btn" title="强制刷新" @click="reRender()" />
       <slot name="right-toolbar"></slot>
     </div>
 
     <div class="form" v-show="showSetting" @click.stop>
+      <label>
+        显示宽度：
+        <input v-model="inW" placeholder="默认350" />
+      </label>
+      <br />
       <label>
         设备宽度：
         <input v-model="inDW" placeholder="默认1200" />
@@ -37,12 +42,6 @@
         设备字号（基于css像素）：
         <input v-model="inFontSize" placeholder="默认16" />
       </label>
-      <br />
-      <label>
-        显示宽度：
-        <input v-model="inW" placeholder="默认350" />
-      </label>
-
       <Button size="small" @click="reRender()">重新渲染</Button>
     </div>
   </div>
@@ -52,7 +51,8 @@ const CACHE_CONFIG_KEY = "enne5w4-mobile-preview-setting-config";
 export default {
   props: {
     deviceSetable: {
-      default: true
+      default: false,
+      type: Boolean
     }
   },
   data() {
@@ -97,10 +97,10 @@ export default {
       if (this.width > this.deviceWidth) {
         this.width = this.deviceWidth;
       }
-      
+
       // step3：开始计算：
       this.height = (this.width * this.deviceHeight) / this.deviceWidth;
-      this.scale = this.width / this.deviceWidth;      
+      this.scale = this.width / this.deviceWidth;
       this.$emit("change-screen", {
         width: this.deviceWidth,
         height: this.deviceHeight
@@ -151,9 +151,9 @@ export default {
 <style scoped lang='scss'>
 $rightBorder: 41px;
 .preview-wrapper {
-  display: flex;
-  text-align: initial;
-  color: initial;
+  display: inline-block;
+  width: min-content;
+  position: relative;
 }
 .preview-content {
   box-sizing: content-box;
@@ -174,9 +174,12 @@ $rightBorder: 41px;
 
 /* 右侧相关样式： */
 .intoolbar {
-  z-index: 1;
+  z-index: 99;
   margin-left: -$rightBorder;
   width: $rightBorder;
+  position: absolute;
+  right: 0;
+  top: 0;
   .icon-btn {
     color: #aaa;
     font-size: 18px;
@@ -197,7 +200,11 @@ $rightBorder: 41px;
   width: 17em;
   font-size: 12px;
   color: #bbb;
-  align-self: flex-start;
+
+  position: absolute;
+  left: 100%;
+  top: 0;
+  z-index: 999;
 
   margin: 12px 0 0 6px;
   padding: 2em;
