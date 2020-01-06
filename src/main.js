@@ -8,8 +8,8 @@ import 'view-design/dist/styles/iview.css';
 // 下面的引入 二选一：
 // import plugin from "../dist";
 // Vue.use(plugin)
-Vue.component('MobilePreview', () => import('../src/components/MobilePreview'))
-Vue.component('ImgSelect', () => import('../src/components/ImgSelect'))
+Vue.component('MobilePreview', () => import('./deploy/components/MobilePreview'))
+Vue.component('ImgSelect', () => import('./deploy/components/ImgSelect'))
 
 
 

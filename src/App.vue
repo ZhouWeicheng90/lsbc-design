@@ -9,7 +9,7 @@
 
 <script>
 import TestImgSelect from "./test-files/TestImgSelect";
-import { UploadService as sFn, test } from "../dist/service";
+import { UploadService as sFn, test } from "./deploy/service";
 export default {
   name: "App",
   data() {

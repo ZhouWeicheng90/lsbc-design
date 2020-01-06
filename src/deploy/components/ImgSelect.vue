@@ -47,10 +47,10 @@ export default {
               return i;
             }
           }
-          let max = Math.floor(+this.maxLength || 0);         
+          let max = Math.floor(+this.maxLength || 0);
           if (max <= 0) {
             max = this.hasPlace ? -1 : Number.POSITIVE_INFINITY;
-          }         
+          }
           if (this.imgList.length < max) {
             this.imgList.push({
               url: "",
