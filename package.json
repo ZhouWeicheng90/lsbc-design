@@ -1,6 +1,6 @@
 {
   "name": "lsbc-design",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "files": [
     "dist"
   ],
@@ -72,9 +72,10 @@
     "url": "https://github.com/ZhouWeicheng90/lsbc-design.git"
   },
   "dependencies": {
-    "view-design": "^4.0.2",
-    "vue": "^2.5.2",
+    "axios": "^0.19.0",
     "image-compressor.js": "*",
-    "qiniu-js": "*"
+    "qiniu-js": "*",
+    "view-design": "^4.0.2",
+    "vue": "^2.5.2"
   }
 }

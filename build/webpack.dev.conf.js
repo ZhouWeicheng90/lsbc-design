@@ -26,6 +26,16 @@ module.exports = merge(baseConfig, {
             rewrites: [
                 { from: /.*/, to: path.posix.join('/demo.html') },
             ]
+        },
+        proxy: {
+            '/sss': {
+                target: 'http://192.168.2.10:8080/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/sss': ''
+                }
+            }
+
         }
     },
     plugins: [
