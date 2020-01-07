@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding:2em">
     <TestUploadService />
     <br>
     <TestImgSelect />

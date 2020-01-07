@@ -1,8 +1,18 @@
 <template>
   <div>
-    <ImgSelect :imgList="imgList1" />
+    <ImgSelect :imgList="imgList" ref="imgs" @imgsChange="$forceUpdate()" />
     <Button @click="uplImgPrivate">私有上传单张</Button>&nbsp; &nbsp; &nbsp;
     <Button @click="uplImgPublic">公有上传单张</Button>
+    <div style="margin:.35em 0" />
+    <Button @click="uplImgsPrivate">私有上传多张</Button>&nbsp; &nbsp; &nbsp;
+    <Button @click="uplImgsPublic">公有上传多张</Button>
+    <div style="margin-bottom:1em" v-for="(item,ind) in imgList" :key="ind">
+      file:{{item.file}}
+      <br />
+      key:{{item.key}}
+      <br />
+      url:{{item.url}}
+    </div>
   </div>
 </template>
 
@@ -12,21 +22,35 @@ import x from "../../deploy/service.js";
 export default {
   data() {
     return {
-      imgList1: [{}],
+      imgList: [{}, {}, {}],
       uploadService: null
     };
   },
   methods: {
     uplImgPrivate() {
-      this.uploadService
-        .uploadPrivateOne(this.imgList1[0].file, 1)
-        .then(res => {
-          console.log("private:", res);
-        });
+      this.uploadService.uploadPrivateOne(this.imgList[0].file, 1).then(res => {
+        this.$forceUpdate();
+        console.log("private:", res);
+      });
     },
     uplImgPublic() {
-      this.uploadService.uploadOne(this.imgList1[0].file, 1).then(res => {
+      this.uploadService.uploadOne(this.imgList[0].file, 1).then(res => {
+        this.$forceUpdate();
         console.log("public:", res);
+      });
+    },
+    uplImgsPrivate() {
+      this.uploadService.uploadPrivateMutiple(this.imgList, 1).then(res => {
+        this.$refs.imgs.$forceUpdate();
+        this.$forceUpdate();
+        console.log(this.imgList);
+      });
+    },
+    uplImgsPublic() {
+      this.uploadService.uploadMutiple(this.imgList, 1).then(res => {
+        this.$refs.imgs.$forceUpdate();
+        this.$forceUpdate();
+        console.log(this.imgList);
       });
     }
   },
