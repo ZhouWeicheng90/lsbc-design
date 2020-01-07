@@ -12,10 +12,13 @@
     <div>此处采用默认的，位置个数4个。设置了 hiddeSelectWhenFull 和 equalProportion. 设置了hiddeSelectWhenFull，不能同时设置hasplace为false</div>
     <ImgSelect :imgList="imgList2" hiddeSelectWhenFull equalProportion />
     <br />
+
+
     <div>设置为没有位置（hasplace=false），如果没设maxLength，可以传无限个；否则最多传maxLength个。删除后，位置跟着删除了，下次添加只会在末尾增加</div>
     <ImgSelect :imgList="imgList3" :hasPlace="false" />
     <ImgSelect :imgList="imgList3_1" :hasPlace="false" maxLength="7" />
     <br />
+
 
     <div>
       自定义匹配函数（此处 图片名称 对应 位置顺序，如3.jpg，对应第三个(index==2的）位置），hasplace只能是true(设置false无效)
