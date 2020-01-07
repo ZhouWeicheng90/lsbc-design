@@ -8,8 +8,10 @@ const _executeUpload = function (file, token, mediaType) {
     };
     const _getMimeType = function (mediaType) {
         switch (mediaType) {
-            case 1: return ["image/jpeg","image/png","image/gif","image/*"]
-            case 2: return ["audio/*"]
+            //  case 1: return ["image/png", "image/jpeg", "image/gif"]
+            // case 2: return ["audio/mp3"]
+            case 1: return ["image/jpeg", "image/png", "image/gif"]
+            case 2: return ["audio/mp3"]
             default: return [];
         }
 
@@ -34,14 +36,7 @@ const _executeUpload = function (file, token, mediaType) {
     });
 }
 /**
- * 1 图片，2 音频, 3 音频
- * GET /qiniu/content/token?mediaType=1  获取私有token  X-Access-Token
-
- * get /qiniu/url?showPub=true 获取公有url
- * 
- * 
- * POST /qiniu/content/illustration 获取图片url，并在后台建立key与资源的关联
- * POST /qiniu/content/media  音频的url，没有和图片统一，因为后台处理较复杂，多了一个加密
+ * 1 图片，2 音频, 3 音频 
  */
 export default class {
     constructor(getAccessTokenFn, baseURL = '/upld') {
@@ -81,7 +76,7 @@ export default class {
         // 全部成功才能成功：
         let reqs = [];
         lines.forEach((line, ind) => {
-            reqs.push(this.uploadOne(line.file).then(res => {
+            reqs.push(this.uploadOne(line.file, mediaType).then(res => {
                 line.url = res.url;
                 line.key = res.key;
                 line.file = undefined;
@@ -92,7 +87,21 @@ export default class {
         })
         await Promise.all(reqs)
     }
-    async uploadPrivateMutiple(lines, mediaType, handleFn = undefined) { }
+    async uploadPrivateMutiple(lines, mediaType, handleFn = undefined) {
+        // 全部成功才能成功：
+        let reqs = [];
+        lines.forEach((line, ind) => {
+            reqs.push(this.uploadPrivateOne(line.file, mediaType).then(res => {
+                line.url = res.url;
+                line.key = res.key;
+                line.file = undefined;
+                if (typeof handleFn === 'function') {
+                    return handleFn(res, line, ind, lines)
+                }
+            }))
+        })
+        await Promise.all(reqs)
+    }
     /**
      * 上传一个文件，到公共区间
      * @param {*} file 
@@ -105,15 +114,19 @@ export default class {
         });
         let uploadRes = await _executeUpload(file, tokenRes.token, mediaType);
 
-        let param = {
+        let params = {
             key: uploadRes.key,
             resouceName: file.name,
             size: file.size,
             showPub: true
         };
-        // TODO 此处未必会返回code！！
-        let res = await this.Θaxios(param)
-        return res && res.data || res
+
+        let res = await this.Θaxios({
+            method: 'get',
+            url: '/qiniu/url',
+            params
+        })
+        return res
     }
 
     /**
@@ -121,7 +134,30 @@ export default class {
      * @param {*} file 
      * @param {*} mediaType 
      */
-    async uploadPrivateOne(file, mediaType) { }
+    async uploadPrivateOne(file, mediaType) {
+        let tokenRes = await this.Θaxios({
+            url: `/qiniu/content/token?mediaType=${mediaType}`,
+            method: 'get'
+        });
+        let uploadRes = await _executeUpload(file, tokenRes.token, mediaType);
+
+        let params = {
+            key: uploadRes.key,
+            resouceName: file.name,
+            size: file.size,
+            mediaType,
+            mediaId: tokenRes.mediaId,
+            mediaKey: tokenRes.mediaKey
+        };
+
+
+        let res = await this.Θaxios({
+            method: 'post',
+            url: mediaType === 1 ? '/qiniu/content/illustration' : `/qiniu/content/media`,
+            data: params
+        })
+        return res
+    }
 
 }
 

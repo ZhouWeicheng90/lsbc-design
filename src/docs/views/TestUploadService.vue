@@ -1,7 +1,8 @@
 <template>
   <div>
     <ImgSelect :imgList="imgList1" />
-    <Button @click="upl">上传</Button>
+    <Button @click="uplImgPrivate">私有上传单张</Button>&nbsp; &nbsp; &nbsp;
+    <Button @click="uplImgPublic">公有上传单张</Button>
   </div>
 </template>
 
@@ -16,9 +17,16 @@ export default {
     };
   },
   methods: {
-    upl() {
-      this.uploadService.uploadOne(this.imgList1[0].file, 1).then(res=>{
-          console.log(res)
+    uplImgPrivate() {
+      this.uploadService
+        .uploadPrivateOne(this.imgList1[0].file, 1)
+        .then(res => {
+          console.log("private:", res);
+        });
+    },
+    uplImgPublic() {
+      this.uploadService.uploadOne(this.imgList1[0].file, 1).then(res => {
+        console.log("public:", res);
       });
     }
   },

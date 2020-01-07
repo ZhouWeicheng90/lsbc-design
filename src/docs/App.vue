@@ -1,6 +1,7 @@
 <template>
   <div>
-    <TestUploadService/>
+    <TestUploadService />
+    <br>
     <TestImgSelect />
     <TestMobilePreview />
   </div>
@@ -14,19 +15,7 @@ import TestUploadService from "./views/TestUploadService";
 
 export default {
   name: "App",
-  data() {
-    return {
-      imgList1: [
-        { url: "", caption: "a", name: "n1" },
-        { url: "", caption: "b", name: "n2" },
-        { url: "", caption: "c", name: "n3" }
-      ],
-      imgList2: [{ url: "" }, { url: "" }, { url: "" }]
-    };
-  },
-  components: { TestImgSelect, TestMobilePreview, TestUploadService },
-  methods: {},
-  mounted() {}
+  components: { TestImgSelect, TestMobilePreview, TestUploadService }
 };
 </script>
 
