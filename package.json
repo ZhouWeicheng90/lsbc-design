@@ -1,6 +1,6 @@
 {
   "name": "lsbc-design",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "files": [
     "dist"
   ],
@@ -11,10 +11,9 @@
   ],
   "author": "周维成",
   "scripts": {
-    "dev": "npm run build && webpack --config build/webpack.dev.conf.js",
-    "server":"node build/server.js",
-    "build": "webpack --config build/webpack.deploy.conf.js",
-    "deploy": "npm run build && npm publish"
+    "dev": "webpack-dev-server --config build/webpack.dev.conf.js",
+    "doc": "webpack --config build/webpack.dev.conf.js && node build/server.js",
+    "deploy": "webpack --config build/webpack.deploy.conf.js && npm publish"
   },
   "peerDependencies": {},
   "devDependencies": {

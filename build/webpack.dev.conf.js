@@ -1,9 +1,8 @@
 const path = require('path')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base')
-
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const getPath = function (subpath) {
@@ -18,18 +17,24 @@ module.exports = merge(baseConfig, {
         filename: '[name].js',
         chunkFilename: 'js/[id].js',
     },
+    devServer: {
+        hot: true,
+        host: '',
+        port: 1127,
+        publicPath: '/',
+        historyApiFallback: {
+            rewrites: [
+                { from: /.*/, to: path.posix.join('/demo.html') },
+            ]
+        }
+    },
     plugins: [
+        new CleanWebpackPlugin(),
+        new webpack.HotModuleReplacementPlugin(),  // 模块热替换的关键
         new HtmlWebpackPlugin({
             filename: 'demo.html',
-            template: getPath('src/docs/index.html')          
+            template: getPath('src/docs/index.html')
         }),
-        new CleanWebpackPlugin(),
-        // new FriendlyErrorsPlugin({
-        //     compilationSuccessInfo: {
-        //         messages: [`Your application is running here: http://localhost:1127`],
-        //     },
-        //     onErrors: 'undefined'
-        // })
     ]
 
 })

@@ -17,23 +17,29 @@ var server = http.createServer(function (request, response) {
 
     //文件夹的绝对路径
     var staticPath = path.resolve(__dirname, '../dist-docs')
+    if (/sss/.test(pathObj.pathname)) {
+        // 拦截转发到http://192.168.2.10:8080/
+        console.log(pathObj.pathname)
+    } else {
+        //获取资源文件绝对路径
+        var filePath = path.join(staticPath, pathObj.pathname);
+        // path.join()用于连接路径。该方法的主要用途在于，会正确使用当前系统的路径分隔符，Unix系统是/，Windows系统是\。
+
+        //异步读取file
+        fs.readFile(filePath, 'binary', function (err, fileContent) {
+            if (err) {
+                response.writeHead(404, 'not found')
+                response.end('<h1>404 Not Found</h1>')
+            } else {
+                response.write(fileContent, 'binary')
+                response.end()
+            }
+        })
+    }
 
 
-    //获取资源文件绝对路径
-    var filePath = path.join(staticPath, pathObj.pathname);
-    // path.join()用于连接路径。该方法的主要用途在于，会正确使用当前系统的路径分隔符，Unix系统是/，Windows系统是\。
-
-    //异步读取file
-    fs.readFile(filePath, 'binary', function (err, fileContent) {
-        if (err) {
-            response.writeHead(404, 'not found')
-            response.end('<h1>404 Not Found</h1>')
-        } else {
-            response.write(fileContent, 'binary')
-            response.end()
-        }
-    })
 
 })
-server.listen(1127)
-console.log('start success! please visit: http://localhost:1127/')
+server.listen(1994)
+console.log('在线文档已经生成，所有文件在dist-docs目录中')
+console.log('start success! please visit: http://localhost:1994/')

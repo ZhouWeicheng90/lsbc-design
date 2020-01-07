@@ -12,10 +12,11 @@ export default class {
      * @param {*} getUrlFn 
      * @param {*} mediaType 1：图片，2：音频
      */
-    constructor(getTokenFn, getUrlFn, mediaType) {
+    constructor(getTokenFn, getUrlFn, mediaType, isPub = false) {
         this.getTokenFn = getTokenFn
         this.getUrlFn = getUrlFn
         this.mediaType = mediaType
+        this.isPub = isPub
     }
 
     /**
@@ -24,12 +25,17 @@ export default class {
      * @param {(res,line,index,lines)=>Promise} handleFn  单个文件上传成功后的回调
      * @returns {Promise} 
      */
-    async uploadMutiple(lines, handleFn) {
+    async uploadMutiple(lines, handleFn = undefined) {
         // 全部成功才能成功：
         let reqs = [];
         lines.forEach((line, ind) => {
             reqs.push(this.uploadOne(line.file).then(res => {
-                return handleFn(res, line, ind, lines)
+                line.url = res.url;
+                line.key = res.key;
+                line.file = undefined;
+                if (typeof handleFn === 'function') {
+                    return handleFn(res, line, ind, lines)
+                }
             }))
         })
         await Promise.all(reqs)
@@ -41,14 +47,28 @@ export default class {
      * @returns {Promise<{key,url}>}
      */
     async uploadOne(file) {
-        let tokenRes = await this.getTokenFn({ mediaType: this.mediaType });
+
+        // TODO 此处未必会返回code！！
+        let tokenRes = await this.getTokenFn({ showPub: this.isPub, mediaType: this.mediaType });
         if (tokenRes.code !== 0) {
-            throw tokenRes.msg;
+            throw tokenRes.msg || '获取上传token失败！';
         }
         let token = tokenRes.data.token;
 
         let uploadRes = await this._executeUpload(file, token);
-        return await this._getUrl(uploadRes, tokenRes, file)
+
+        let param = {
+            key: uploadRes.key,
+            resouceName: file.name,
+            size: file.size,
+            mediaType: this.mediaType,
+            mediaId: tokenRes.data.mediaId,
+            mediaKey: tokenRes.data.mediaKey,
+            showPub: this.isPub
+        };
+        // TODO 此处未必会返回code！！
+        let res = await this.getUrlFn(param)
+        return res && res.data || res
     }
     _executeUpload(file, token) {
 
@@ -77,23 +97,12 @@ export default class {
         });
     }
 
-    async _getUrl(uploadRes, tokenRes, file) {
-        let param = {
-            key: uploadRes.key,
-            resouceName: file.name,
-            size: file.size,
-            mediaType: this.mediaType,
-            mediaId: tokenRes.data.mediaId,
-            mediaKey: tokenRes.data.mediaKey
-        };
-        let res = await this.getUrlFn(param)
-        return res && res.data || res
-    }
+
 
     getMimeType() {
         switch (this.mediaType) {
-            case 1: return ["image/png", "image/jpeg", "image/gif"]
-            case 2: return ["audio/mp3"]
+            case 1: return ["image/*"]
+            case 2: return ["audio/*"]
             default: return [];
         }
 
