@@ -24,7 +24,7 @@ module.exports = merge(baseConfig, {
         publicPath: '/',
         historyApiFallback: {
             rewrites: [
-                { from: /.*/, to: path.posix.join('/demo.html') },
+                { from: /.*/, to: path.posix.join('/index.html') },
             ]
         },
         proxy: {
@@ -42,7 +42,7 @@ module.exports = merge(baseConfig, {
         new CleanWebpackPlugin(),
         new webpack.HotModuleReplacementPlugin(),  // 模块热替换的关键
         new HtmlWebpackPlugin({
-            filename: 'demo.html',
+            filename: 'index.html',
             template: getPath('src/docs/index.html')
         }),
     ]
