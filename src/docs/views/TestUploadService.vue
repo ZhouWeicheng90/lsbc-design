@@ -20,6 +20,8 @@
 import x from "../../deploy/service.js";
 
 export default {
+  name: "TestUploadService",
+  label: "文件上传",
   data() {
     return {
       imgList: [{}, {}, {}],

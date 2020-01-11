@@ -1,12 +1,11 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
 import iView from 'view-design';
 import 'view-design/dist/styles/iview.css';
-import Router from 'vue-router'
 Vue.use(iView);
-Vue.use(Router)
+
+
 
 
 
@@ -19,19 +18,11 @@ import plugin from "../deploy/index";
 Vue.use(plugin)
 
 
-
-
-import TestImgSelect from "./views/TestImgSelect";
-import TestMobilePreview from "./views/TestMobilePreview";
-import TestUploadService from "./views/TestUploadService";
-let router = new Router({
-  routes: [
-    { path: '/', redirect: '/ImgSelect' },
-    { path: '/ImgSelect', name: 'ImgSelect', component: TestImgSelect },
-    { path: '/MobilePreview', name: 'MobilePreview', component: TestMobilePreview },
-    { path: '/UploadService', name: 'UploadService', component: TestUploadService }
-  ]
-})
+import routes from './routes'
+import Router from 'vue-router'
+import App from './App'
+Vue.use(Router)
+let router = new Router({ routes: routes.concat([{ path: '/', redirect: '/Introduction', name: 'default' }]) })
 Vue.config.productionTip = false
 new Vue({
   el: '#app',

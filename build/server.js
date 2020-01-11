@@ -6,7 +6,7 @@ var path = require('path')
 var server = http.createServer(function (request, response) {
 
     //获取输入的url解析后的对象
-    var pathObj = url.parse(request.url == '/' ? '/demo.html' : request.url, false);
+    var pathObj = url.parse(request.url == '/' ? '/index.html' : request.url, false);
     // request.url表示的是输入的url除了域名后面的部分，http://localhost:8080/login.html?aa=001&bb=002即为/login.html?aa=001&bb=002
     // url.parse(request.url, true)表示的是将该url解析成一个对象。其中第二个参数默认false。
     // false的话，query对应的值 =>    'aa=001&bb=002'
