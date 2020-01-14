@@ -8,7 +8,7 @@ let routes = []
 pagesContext.keys().forEach(key => {
     let page = pagesContext(key)
     page = page.default || page
-    console.log(page.name, page)
+    // console.log(page.name, page)
     routes.push({
         path: '/' + page.name,
         name: page.name,
@@ -17,6 +17,6 @@ pagesContext.keys().forEach(key => {
     })
 
 })
-console.log(routes)
+// console.log(routes)
 
 export default routes

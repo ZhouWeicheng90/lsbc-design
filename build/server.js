@@ -3,7 +3,7 @@ var fs = require('fs')
 var url = require('url')
 var path = require('path')
 
-var server = http.createServer(function (request, response) {
+var server = http.createServer({ key: '', cert: '' }, function (request, response) {
 
     //获取输入的url解析后的对象
     var pathObj = url.parse(request.url == '/' ? '/index.html' : request.url, false);
@@ -13,17 +13,15 @@ var server = http.createServer(function (request, response) {
     // true的话，query对应的值 =>{ aa: '001', bb: '002' }
     // 相当于将url中的参数进行了解析，以便后面的调用(pathObj.query.aa)
 
-
-
     //文件夹的绝对路径
+    // 默认目录是当前项目的目录 E:\MGh\lsbc-design 而非 E:\MGh\lsbc-design\build
     var staticPath = path.resolve(__dirname, '../dist-docs')
+
     if (/sss/.test(pathObj.pathname)) {
         // 拦截转发到http://192.168.2.10:8080/
         console.log(pathObj.pathname)
     } else {
-        //获取资源文件绝对路径
         var filePath = path.join(staticPath, pathObj.pathname);
-        // path.join()用于连接路径。该方法的主要用途在于，会正确使用当前系统的路径分隔符，Unix系统是/，Windows系统是\。
 
         //异步读取file
         fs.readFile(filePath, 'binary', function (err, fileContent) {

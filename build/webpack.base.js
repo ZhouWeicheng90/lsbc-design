@@ -67,9 +67,9 @@ module.exports = {
                             sourceMap: false
                         }
                     }]
-            },
+            },            
             {
-                test: /\.scss$/,
+                test: /\.less$/,
                 use: [
                     'vue-style-loader',
                     {
@@ -85,33 +85,9 @@ module.exports = {
                         }
                     },
                     {
-                        loader: "sass-loader",
+                        loader: "less-loader",
                         options: {
-                            sourceMap: false
-                        }
-                    }
-                ]
-            },
-            {
-                test: /\.sass$/,
-                use: [
-                    'vue-style-loader',
-                    {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: false
-                        }
-                    },
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            sourceMap: false
-                        }
-                    },
-                    {
-                        loader: "sass-loader",
-                        options: {
-                            indentedSyntax: true,
+                            javascriptEnabled: true,
                             sourceMap: false
                         }
                     }

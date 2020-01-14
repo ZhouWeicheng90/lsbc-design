@@ -148,8 +148,8 @@ export default {
   }
 };
 </script>
-<style scoped lang='scss'>
-$rightBorder: 41px;
+<style scoped lang='less'>
+@rightBorder: 41px;
 .preview-wrapper {
   display: inline-block;
   width: min-content;
@@ -159,7 +159,7 @@ $rightBorder: 41px;
   box-sizing: content-box;
   border-style: solid;
   border-color: #333;
-  border-width: 39px $rightBorder 46px 42px;
+  border-width: 39px @rightBorder 46px 42px;
   border-radius: 20px;
   box-shadow: 0 0 3px black, 0 0 16px black, 0 0 23px black, 0 0 2px 4px white,
     0 0 1px 5px black;
@@ -175,8 +175,8 @@ $rightBorder: 41px;
 /* 右侧相关样式： */
 .intoolbar {
   z-index: 99;
-  margin-left: -$rightBorder;
-  width: $rightBorder;
+  margin-left: -@rightBorder;
+  width: @rightBorder;
   position: absolute;
   right: 0;
   top: 0;

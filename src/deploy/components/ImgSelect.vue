@@ -218,13 +218,13 @@ export default {
 };
 </script>
 
- <style scoped lang='scss'>
+ <style scoped lang='less'>
 .demo-img {
   width: 60px;
   height: 60px;
   display: inline-block;
   border-radius: 8%;
-  box-shadow: 0 0 0 1px rgba($color: #bbb, $alpha: 0.4) inset;
+  box-shadow: 0 0 0 1px rgba(#bbb, 0.4) inset;
   overflow: hidden;
   margin-right: 5px;
   position: relative;
