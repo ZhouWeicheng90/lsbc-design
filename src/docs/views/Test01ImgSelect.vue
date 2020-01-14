@@ -4,15 +4,15 @@
     <ImgSelect :imgList="imgList1" />
     <br />
     <div>
-      设置maxLength，有place概念（默认）。不用预设n个位置，最多传入maxLength（此处为7）个文件，会自动增加位置。当删除时，新增的位置仍在
-      <br />如果设置的maxLength比n小，设置的maxLength无效，和不设一样
+      设置max-length，有place概念（默认）。不用预设n个位置，最多传入max-length（此处为7）个文件，会自动增加位置。当删除时，新增的位置仍在
+      <br />如果设置的max-length比n小，设置的max-length无效，和不设一样
     </div>
     <ImgSelect :imgList="imgList1_1" max-length="7" />
     <br />
     <div>此处采用默认的，位置个数4个。设置了 hiddeSelectWhenFull 和 equalProportion. 设置了hiddeSelectWhenFull，不能同时设置hasplace为false</div>
     <ImgSelect :imgList="imgList2" hiddeSelectWhenFull equalProportion />
     <br />
-    <div>设置为没有位置（hasplace=false），如果没设maxLength，可以传无限个；否则最多传maxLength个。删除后，位置跟着删除了，下次添加只会在末尾增加</div>
+    <div>设置为没有位置（hasplace=false），如果没设max-length，可以传无限个；否则最多传max-length个。删除后，位置跟着删除了，下次添加只会在末尾增加</div>
     <ImgSelect :imgList="imgList3" :hasPlace="false" />
     <ImgSelect :imgList="imgList3_1" :hasPlace="false" max-length="7" />
     <br />
