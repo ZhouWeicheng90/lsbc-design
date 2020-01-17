@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import iView from 'view-design';
-import 'view-design/dist/styles/iview.css';
+import './common.less';
 Vue.use(iView);
 
 

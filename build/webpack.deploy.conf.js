@@ -11,16 +11,17 @@ module.exports = merge(baseConfig, {
         index: getPath('src/deploy/index.js'),
         service: getPath('src/deploy/service.js'),
     },
+    externals: ["image-compressor.js", 'axios', 'qiniu-js'],
     output: {
         path: getPath('dist'),
         filename: '[name].js',
-        
+
         library: 'LSBCUI',
         libraryTarget: 'umd',
         libraryExport: 'default'
     },
-    plugins: [       
-        new CleanWebpackPlugin(),        
+    plugins: [
+        new CleanWebpackPlugin(),
     ]
 
 })

@@ -12,9 +12,10 @@
   "author": "周维成",
   "scripts": {
     "dev": "webpack-dev-server --config build/webpack.dev.conf.js",
-    "t": "webpack --config build/webpack.dev.conf.js &&",
-    "doc": "webpack --config build/webpack.dev.conf.js && node build/server.js",
-    "deploy": "webpack --config build/webpack.deploy.conf.js && npm publish"
+    "predoc": "webpack --config build/webpack.builddoc.conf.js",
+    "doc": "node build/server.js",
+    "predeploy": "webpack --config build/webpack.deploy.conf.js",
+    "deploy": "npm publish"
   },
   "peerDependencies": {},
   "devDependencies": {
