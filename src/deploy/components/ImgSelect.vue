@@ -1,5 +1,5 @@
 <template>
-  <div v-show="hasPlace||!hiddeSelectWhenFull">
+  <div style="display:inline-block;">
     <Modal title="图片预览" v-model="modal4preview" :width="600">
       <img :src="reviewImgUrl" style="max-width: 100%" />
     </Modal>
@@ -47,11 +47,7 @@ export default {
               return i;
             }
           }
-          let max = Math.floor(+this.maxLength || 0);
-          if (max <= 0) {
-            max = this.hasPlace ? -1 : Number.POSITIVE_INFINITY;
-          }
-          if (this.imgList.length < max) {
+          if (this.imgList.length < this.maxlen) {
             this.imgList.push({
               url: "",
               key: "",
@@ -87,7 +83,6 @@ export default {
       type: Number | String,
       default: 1200
     },
-
     compressQuality: {
       type: Number | String,
       default: 0.4
@@ -98,12 +93,34 @@ export default {
     return {
       reviewImgUrl: "",
       modal4preview: false,
-      notFull: true,
 
       selectedFiles: [],
       isUploading: false,
       loading_img_flag: loading
     };
+  },
+  computed: {
+    notFull() {
+      if (!this.imgList) {
+        return true;
+      }
+      if (this.imgList.length < this.maxlen) {
+        return true;
+      }
+      return (this.imgList || []).some(imgObj => !imgObj.url);
+    },
+    maxlen() {
+      if (this.findMatchIndex.length === 11) {
+        //  默认函数，设置的maxLength和hasPlace才有效，否则hasPlace为true，maxLength由用户的函数控制。
+        let max = window.parseInt(this.maxLength) || 0;
+        if (max <= 0) {
+          // 无效的时候
+          max = this.hasPlace ? -1 : Number.POSITIVE_INFINITY;
+        }
+        return max;
+      }
+      return (this.imgList || []).length;
+    }
   },
   methods: {
     handleView(picObj) {
@@ -116,7 +133,6 @@ export default {
         this.imgList[index].url = "";
         this.imgList[index].key = "";
         this.imgList[index].file = undefined;
-        this.notFull = true;
         this.$emit("imgsChange", [index]);
         this.$forceUpdate();
       } else {
@@ -156,7 +172,6 @@ export default {
       Promise.all(reqs).then(() => {
         if (changeInds.length) {
           this.$emit("imgsChange", changeInds);
-          this.notFull = (this.imgList || []).some(imgObj => !imgObj.url);
         }
       });
     },
@@ -203,17 +218,9 @@ export default {
       });
     }
   },
-  beforeMount() {
-    if (!this.hasPlace && this.hiddeSelectWhenFull) {
-      throw new Error(
-        `you must not set prop 'hasPlace = false' when using 'hiddeSelectWhenFull = true'!`
-      );
-    }
-  },
+  beforeMount() {},
   watch: {
-    imgList() {
-      this.notFull = (this.imgList || []).some(imgObj => !imgObj.url);
-    }
+    imgList() {}
   }
 };
 </script>
