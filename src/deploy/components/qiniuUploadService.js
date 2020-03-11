@@ -11,7 +11,7 @@ const _executeUpload = function (file, token, mediaType) {
             //  case 1: return ["image/png", "image/jpeg", "image/gif"]
             // case 2: return ["audio/mp3"]
             case 1: return ["image/jpeg", "image/png", "image/gif"]
-            case 2: return ["audio/mp3"]
+            case 2: return ["audio/mp3","audio/wav","audio/midi"]
             default: return [];
         }
 

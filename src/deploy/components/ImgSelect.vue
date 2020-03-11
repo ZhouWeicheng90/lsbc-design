@@ -71,11 +71,15 @@ export default {
       default: true,
       type: Boolean
     },
-    showCompressLog: {
+    equalProportion: {
       default: false,
       type: Boolean
     },
-    equalProportion: {
+    compressAble: {
+      default: true,
+      type: Boolean
+    },
+    showCompressLog: {
       default: false,
       type: Boolean
     },
@@ -167,7 +171,12 @@ export default {
         if (imgObj.url !== this.loading_img_flag) {
           return;
         }
-        reqs.push(this.compressAndAddIndex(imgObj.file, ind, changeInds));
+        if (this.compressAble) {
+          reqs.push(this.compressAndAddIndex(imgObj.file, ind, changeInds));
+        } else {
+          changeInds.push(ind);
+          reqs.push(Promise.resolve());
+        }
       });
       Promise.all(reqs).then(() => {
         if (changeInds.length) {
