@@ -23,7 +23,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [path.posix.resolve(__dirname, '../src')]  // 意思是只处理src下的吗？（默认是处理所有的吗？）
+                include: [path.posix.resolve(__dirname, '../src')]  // include 和 test 两个条件联合！
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

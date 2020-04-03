@@ -34,6 +34,16 @@
 </template>
 <script>
 import ImageCompressor from "image-compressor.js";
+const loadingIco = "Loading%%=";
+function getImgUrlFromFile(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+  });
+}
 export default {
   props: {
     imgList: {
@@ -50,7 +60,6 @@ export default {
           if (this.imgList.length < this.maxlen) {
             this.imgList.push({
               url: "",
-              key: "",
               file: null
             });
             return this.imgList.length - 1;
@@ -59,48 +68,49 @@ export default {
         };
       }
     },
-    hiddeSelectWhenFull: {
-      default: false,
-      type: Boolean
-    },
     maxLength: {
       default: 0,
-      type: Number | String
+      type: Number
     },
     hasPlace: {
       default: true,
+      type: Boolean
+    },
+
+    hiddeSelectWhenFull: {
+      default: false,
       type: Boolean
     },
     equalProportion: {
       default: false,
       type: Boolean
     },
+
     compressAble: {
       default: true,
-      type: Boolean
+      type: Boolean | Function
     },
     showCompressLog: {
       default: false,
       type: Boolean
     },
     compressMaxWidth: {
-      type: Number | String,
-      default: 1200
+      type: Number,
+      default: 1600
     },
     compressQuality: {
-      type: Number | String,
-      default: 0.4
+      type: Number,
+      default: 0.6
     }
   },
   data() {
-    const loading = "Loading%%=";
     return {
       reviewImgUrl: "",
       modal4preview: false,
 
       selectedFiles: [],
       isUploading: false,
-      loading_img_flag: loading
+      loading_img_flag: loadingIco
     };
   },
   computed: {
@@ -116,10 +126,10 @@ export default {
     maxlen() {
       if (this.findMatchIndex.length === 11) {
         //  默认函数，设置的maxLength和hasPlace才有效，否则hasPlace为true，maxLength由用户的函数控制。
-        let max = window.parseInt(this.maxLength) || 0;
+        let max = Math.floor(this.maxLength) || 0;
         if (max <= 0) {
           // 无效的时候
-          max = this.hasPlace ? -1 : Number.POSITIVE_INFINITY;
+          max = this.hasPlace ? -1 : Number.MAX_SAFE_INTEGER;
         }
         return max;
       }
@@ -135,12 +145,16 @@ export default {
       if (this.findMatchIndex.length !== 11 || this.hasPlace) {
         // findMatchIndex.length 不为11 说明用户传入了匹配函数，必须是有位置的，即使设了`hasPlace = false`也无效
         this.imgList[index].url = "";
-        this.imgList[index].key = "";
         this.imgList[index].file = undefined;
         this.$emit("imgsChange", [index]);
         this.$forceUpdate();
       } else {
         this.imgList.splice(index, 1);
+        const inds = [];
+        for (let i = index; i <= this.imgList.length; i++) {
+          inds.push(i);
+        }
+        this.$emit("imgsChange", inds);
       }
     },
 
@@ -148,14 +162,14 @@ export default {
       if (/image/.test(file.type)) {
         let ind = this.findMatchIndex(file, this.imgList);
         if (ind >= 0) {
-          this.imgList[ind].url = this.loading_img_flag;
+          this.imgList[ind].url = loadingIco;
           this.imgList[ind].file = file;
-          this.imgList[ind].key = "";
+
           this.$forceUpdate();
           if (!this.isUploading) {
             this.isUploading = true;
             setTimeout(() => {
-              this.initImages();
+              this._initImages();
               this.isUploading = false;
             }, 200);
           }
@@ -164,22 +178,40 @@ export default {
       return false;
     },
 
-    initImages() {
+    _initImages() {
       let reqs = [];
       let changeInds = [];
       this.imgList.forEach((imgObj, ind) => {
-        if (imgObj.url !== this.loading_img_flag) {
+        if (imgObj.url !== loadingIco) {
           return;
         }
-        if (this.compressAble) {
-          reqs.push(this.compressAndAddIndex(imgObj.file, ind, changeInds));
+        let compressFlag = this.compressAble;
+        if (typeof this.compressAble === "function") {
+          compressFlag = this.compressAble(imgObj.file);
+        }
+        // this.compressAble && imgObj.file.size > 300 * 1024
+        if (compressFlag) {
+          reqs.push(
+            this._compress(imgObj.file).then(newFile => {
+              imgObj.file = newFile;
+              return getImgUrlFromFile(newFile).then(url => {
+                imgObj.url = url;
+                changeInds.push(ind);
+              });
+            })
+          );
         } else {
-          changeInds.push(ind);
-          reqs.push(Promise.resolve());
+          reqs.push(
+            getImgUrlFromFile(imgObj.file).then(url => {
+              imgObj.url = url;
+              changeInds.push(ind);
+            })
+          );
         }
       });
       Promise.all(reqs).then(() => {
         if (changeInds.length) {
+          this.$forceUpdate();
           this.$emit("imgsChange", changeInds);
         }
       });
@@ -188,40 +220,29 @@ export default {
     /**
      * @param {File} file
      */
-    compressAndAddIndex(file, ind, changeInds) {
+    _compress(file) {
       const _this = this;
       return new Promise(resolve => {
         new ImageCompressor(file, {
-          quality: +this.compressQuality || 0.4,
-          maxWidth: +this.compressMaxWidth || 1200,
+          quality: this.compressQuality,
+          maxWidth: this.compressMaxWidth,
           success: newFile => {
-            let imgObj = _this.imgList[ind];
-            const reader = new FileReader();
-            reader.readAsDataURL(newFile);
-            reader.onload = () => {
-              imgObj.url = reader.result;
-              imgObj.key = "";
-              imgObj.file = newFile;
-
-              changeInds.push(ind);
-              _this.$forceUpdate();
-              resolve();
-              if (this.showCompressLog) {
-                console.log(
-                  file.name +
-                    ": 压缩前 " +
-                    (file.size >> 10) +
-                    "KB  压缩后 " +
-                    (newFile.size >> 10) +
-                    "KB  压缩比率 " +
-                    (newFile.size / file.size).toFixed(6)
-                );
-              }
-            };
+            resolve(newFile);
+            if (this.showCompressLog) {
+              console.log(
+                file.name +
+                  ": 压缩前 " +
+                  (file.size >> 10) +
+                  "KB  压缩后 " +
+                  (newFile.size >> 10) +
+                  "KB  压缩比率 " +
+                  (newFile.size / file.size).toFixed(6)
+              );
+            }
           },
           error(err) {
             console.error(err.message);
-            resolve();
+            resolve(file);
           }
         });
       });
