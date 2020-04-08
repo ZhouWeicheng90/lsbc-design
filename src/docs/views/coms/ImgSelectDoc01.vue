@@ -31,58 +31,46 @@
             <code>findMatchIndex</code> ？
             <br />
             <br />核心代码很简单：
-            <pre><code>
-<span class="code-key">let</span> ind = +fileName - 1 
-<span class="code-key">return</span> list[ind] ? ind : -1
-            </code></pre>
+            <CodeView codeStr="let ind = +fileName - 1 
+return list[ind] ? ind : -1"/>           
           </div>
         </div>
       </div>
-      <pre style="flex:1">
-        <code>
-&lt;<span class="code-tag">template</span>>
-  &lt;<span class="code-tag">ImgSelect</span> :imgList="imgList" :findMatchIndex="matchFn" />
-&lt;/<span class="code-tag">template</span>>
-&lt;<span class="code-tag">script</span>>
-<span class="code-key">export</span> <span class="code-key">default</span> {
+      <CodeView codeStr="<template>
+  <ImgSelect :imgList='imgList' :findMatchIndex='matchFn' />
+</template>
+<script>
+export default {
   data() {
-    <span class="code-key">return</span> {
+    return {
       imgList: [
         {
-          bookName: "Linux系统详解"
-          <span
-  class="code-notes"
->/** other fileds omited ... */</span>
+          bookName: 'Linux系统详解'
+          /** other fileds omited ... */
         },
         {
-          bookName: "C/C++开发"
-          <span
-  class="code-notes"
->/** other fileds omited ... */</span>
+          bookName: 'C/C++开发'
+          /** other fileds omited ... */
         },
         {
-          bookName: "Webpack4.0手册"
-          <span
-  class="code-notes"
->/** other fileds omited ... */</span>
+          bookName: 'Webpack4.0手册'
+          /** other fileds omited ... */
         }
       ]
-    };
+    }
   },
   methods: {
     matchFn(file, list) {
-      <span class="code-key">let</span> fileName = file.name.substring(0, file.name.lastIndexOf("."));
-      <span class="code-key">return</span> list.findIndex(
-        ele => ele.bookName.replace(/[/:*?"<>|\]/g, "") === fileName
-      );
+      let fileName = file.name.substring(0, file.name.lastIndexOf('.'))
+      /** 根据bookName和图片名称 进行精准匹配（忽略掉 / \ < 等无法命名文件的字符）： */
+      return list.findIndex(
+        ele => ele.bookName.replace(/[/:*?'<>|\]/g, '') === fileName
+      )
     }
   }
-};
-&lt;/<span
-  class="code-tag"
->script</span>>
-        </code>
-    </pre>
+}
+</script>"/>
+      
     </div>
   </div>
 </template>

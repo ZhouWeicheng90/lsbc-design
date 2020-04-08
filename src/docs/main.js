@@ -21,6 +21,8 @@ Vue.use(plugin)
 import routes from './routes'
 import Router from 'vue-router'
 import App from './App'
+import CodeView from './views/coms/CodeView'
+Vue.component('CodeView', CodeView)
 Vue.use(Router)
 let router = new Router({ routes: routes.concat([{ path: '/', redirect: '/Introduction', name: 'default' }]) })
 Vue.config.productionTip = false

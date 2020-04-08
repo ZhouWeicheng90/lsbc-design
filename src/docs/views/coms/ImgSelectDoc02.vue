@@ -29,10 +29,10 @@
           示例2，保留位置，imgList.length 是4，但最多可以选择6张，因为设置了
           <code>max-length="6"</code> ：
         </div>
-        <ImgSelect :imgList="imgList2" max-length="6" />
+        <ImgSelect :imgList="imgList2" :max-length="6" />
 
         <div style="margin-top:2em">示例3，保留位置，最多选择4张（设置的 max-length 较小无效）：</div>
-        <ImgSelect :imgList="imgList3" max-length="2" />
+        <ImgSelect :imgList="imgList3" :max-length="2" />
 
         <div style="margin:2em 0 .5em">
           <b>hasPlace设置为false的情况：</b>
@@ -40,9 +40,9 @@
         <div>示例4，不保留位置，可以传入无限多张：</div>
         <ImgSelect :imgList="imgList4" :hasPlace="false" />
         <div style="margin-top:2em">示例5，不保留位置，最多可以传入6张：</div>
-        <ImgSelect :imgList="imgList5" :hasPlace="false" max-length="6" />
+        <ImgSelect :imgList="imgList5" :hasPlace="false" :max-length="6" />
         <div style="margin-top:2em">示例6，不保留位置，开始可选择4张（由初始的 imgList 决定），但是不断的删除图片，最后最多只能传入2张：</div>
-        <ImgSelect :imgList="imgList6" :hasPlace="false" max-length="2" />
+        <ImgSelect :imgList="imgList6" :hasPlace="false" :max-length="2" />
       </div>
 
       <pre style="flex:1">
@@ -51,18 +51,18 @@
   &lt;<span class="code-tag">div</span> style="width:53em" class="p">
     <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList1" /></b>
     &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList2" max-length="6" /></b>
+    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList2" :max-length="6" /></b>
     &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList3" max-length="2" /></b>
+    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList3" :max-length="2" /></b>
     &lt;<span class="code-tag">br</span> />
     &lt;<span class="code-tag">br</span> />
     &lt;<span class="code-tag">b</span>>hasPlace设置为false的情况：&lt;/<span class="code-tag">b</span>>
     &lt;<span class="code-tag">br</span> />
     <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList4" :hasPlace="false" /></b>
     &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList5" :hasPlace="false" max-length="6" /></b>
+    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList5" :hasPlace="false" :max-length="6" /></b>
     &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList6" :hasPlace="false" max-length="2" /></b>
+    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList6" :hasPlace="false" :max-length="2" /></b>
   &lt;/<span class="code-tag">div</span>>
 &lt;/<span class="code-tag">template</span>>
 
