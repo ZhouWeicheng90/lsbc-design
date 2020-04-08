@@ -44,6 +44,9 @@ module.exports = merge(baseConfig, {
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"development"'
+        }),
         new webpack.NamedChunksPlugin(),
         new webpack.HotModuleReplacementPlugin(),  // 只有有了这个plugin，上面的 hot设置才有效？
         new HtmlWebpackPlugin({

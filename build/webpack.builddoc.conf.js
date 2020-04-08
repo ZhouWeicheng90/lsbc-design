@@ -18,11 +18,13 @@ module.exports = merge(baseConfig, {
         filename: 'js/[name].[chunkhash].js',
         chunkFilename: 'js/[name].[chunkhash].js',
     },
+    devtool: '#source-map',
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': { NODE_ENV: '"production"' }
+            'process.env.NODE_ENV': '"production"'
         }),
         new CleanWebpackPlugin(),
+        new webpack.HashedModuleIdsPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: getPath('src/docs/index.html')

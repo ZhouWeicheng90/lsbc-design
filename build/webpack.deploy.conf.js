@@ -12,6 +12,7 @@ module.exports = merge(baseConfig, {
         service: getPath('src/deploy/service.js'),
     },
     externals: ["image-compressor.js", 'axios', 'qiniu-js'],
+    devtool: '#source-map',
     output: {
         path: getPath('dist'),
         filename: '[name].js',
@@ -21,6 +22,9 @@ module.exports = merge(baseConfig, {
         libraryExport: 'default'
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        }),
         new CleanWebpackPlugin(),
     ]
 
