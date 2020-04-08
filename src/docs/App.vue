@@ -1,12 +1,13 @@
 <template>
-  <Layout style="height:100vh;display:flex;">
+  <Layout style="height:100vh;display:flex;min-width:1900px">
     <Header style="background:#fff;border-bottom:1px solid #ddd"></Header>
     <Layout style="flex:1;background:#eee">
       <Sider>
         <Menu
           :active-name="$route.name"
           width="auto"
-          style="height:calc(100vh - 64px);overflow-y: scroll;"
+          class="header-down"
+          style="overflow-y: scroll;"
         >
           <MenuItem
             v-for="route in routes"
@@ -16,9 +17,11 @@
           >{{route.label}}</MenuItem>
         </Menu>
       </Sider>
-      <Content style="height:calc(100vh - 64px);padding: 16px 0 3px 16px;overflow-y: scroll;">
+      <Content class="header-down" style="padding: 16px 0 3px 16px;overflow-y: scroll;">
         <div style="background:#fff;padding: 16px;border-radius: 4px;min-height: 100%;">
-          <router-view></router-view>
+          <div class="content-left-side-padding">
+            <router-view></router-view>
+          </div>
         </div>
       </Content>
     </Layout>

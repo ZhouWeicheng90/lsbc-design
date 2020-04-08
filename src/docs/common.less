@@ -1,6 +1,20 @@
 @import '~view-design/src/styles/index.less';
 
-// @primary-color: #345678;
+@HeaderHeight   : 64px;
+@StickyLinkWidth: 70px;
+
+.content-left-side-padding {
+    padding-left: @StickyLinkWidth;
+}
+
+.content-left-side {
+    margin-left: -@StickyLinkWidth;
+}
+
+.header-down {
+    height: calc(100vh - 64px);
+}
+
 p,
 .p {
     padding: 1em 1em 2em;
@@ -17,3 +31,9 @@ p,
     border-radius : 2px;
 }
 
+.sticky-link {
+    position        : sticky;
+    display         : inline-block;
+    z-index         : 999;
+    background-color: white;
+}

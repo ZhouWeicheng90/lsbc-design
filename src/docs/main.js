@@ -24,7 +24,13 @@ import App from './App'
 import CodeView from './views/coms/CodeView'
 Vue.component('CodeView', CodeView)
 Vue.use(Router)
-let router = new Router({ routes: routes.concat([{ path: '/', redirect: '/Introduction', name: 'default' }]) })
+let router = new Router({
+  routes: routes.concat([{
+    path: '/', redirect: '/Introduction', name: 'default'
+  }]),
+  mode: 'history'
+})
+
 Vue.config.productionTip = false
 new Vue({
   el: '#app',
