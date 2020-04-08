@@ -44,47 +44,23 @@
         <div style="margin-top:2em">示例6，不保留位置，开始可选择4张（由初始的 imgList 决定），但是不断的删除图片，最后最多只能传入2张：</div>
         <ImgSelect :imgList="imgList6" :hasPlace="false" :max-length="2" />
       </div>
-
-      <pre style="flex:1">
-<code>
-&lt;<span class="code-tag">template</span>>
-  &lt;<span class="code-tag">div</span> style="width:53em" class="p">
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList1" /></b>
-    &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList2" :max-length="6" /></b>
-    &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList3" :max-length="2" /></b>
-    &lt;<span class="code-tag">br</span> />
-    &lt;<span class="code-tag">br</span> />
-    &lt;<span class="code-tag">b</span>>hasPlace设置为false的情况：&lt;/<span class="code-tag">b</span>>
-    &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList4" :hasPlace="false" /></b>
-    &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList5" :hasPlace="false" :max-length="6" /></b>
-    &lt;<span class="code-tag">br</span> />
-    <b>&lt;<span class="code-tag">ImgSelect</span> :imgList="imgList6" :hasPlace="false" :max-length="2" /></b>
-  &lt;/<span class="code-tag">div</span>>
-&lt;/<span class="code-tag">template</span>>
-
-&lt;<span class="code-tag">script</span>>
-<span class="code-key">export</span> <span class="code-key">default</span> {
-  data() {
-    <span class="code-key">return</span> {
-      imgList1: [{}, {}, {}, {}],
-      imgList2: [{}, {}, {}, {}],
-      imgList3: [{}, {}, {}, {}],
-      imgList4: [{}, {}, {}, {}],
-      imgList5: [{}, {}, {}, {}],
-      imgList6: [{}, {}, {}, {}]
-    };
-  }
-};
-&lt;/<span
-  class="code-tag"
->script</span>>
-</code>
-      </pre>
-    </div>
+      <CodeView
+        codeStr="<template>
+  <div style='width:53em' class='p'>
+    <ImgSelect :imgList='imgList1' />
+    <br />
+    <ImgSelect :imgList='imgList2' :max-length='6' />
+    <br />
+    <ImgSelect :imgList='imgList3' :max-length='2' />
+    <br />
+    <br />
+    <b>hasPlace设置为false的情况：</b>
+    <br />
+    <ImgSelect :imgList='imgList4' :hasPlace='false' />
+    <br />
+    <ImgSelect :imgList='imgList5' :hasPlace='false' :max-length='6' />
+    <br />
+    <ImgSelect :imgList='imgList6' :hasPlace='false' :max-length='2' />
   </div>
 </template>
 
@@ -96,6 +72,25 @@ export default {
       imgList2: [{}, {}, {}, {}],
       imgList3: [{}, {}, {}, {}],
       imgList4: [{}, {}, {}, {}],
+      imgList5: [{}, {}, {}, {}],
+      imgList6: [{}, {}, {}, {}]
+    };
+  }
+};
+</script>"
+      />      
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      imgList1: [{}, {}, {}, {}],
+      imgList2: [{}, {}, {}, {}],
+      imgList3: [{}, {}, {}, {}],
+      imgList4: [{}, {}, {}, {}],    
       imgList5: [{}, {}, {}, {}],
       imgList6: [{}, {}, {}, {}]
     };

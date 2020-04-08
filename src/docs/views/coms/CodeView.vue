@@ -12,6 +12,11 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      hidden: false
+    };
+  },
   methods: {
     initHtml(str) {
       return str

@@ -19,8 +19,8 @@ module.exports = merge(baseConfig, {
         filename: 'js/[name].js',
         chunkFilename: 'js/[name].js',
     },
+    devtool: 'cheap-module-eval-source-map',
     devServer: {
-        hot: true,
         host: 'localhost',
         port: 1127,
         publicPath: '/',
@@ -29,6 +29,8 @@ module.exports = merge(baseConfig, {
                 { from: /.*/, to: path.posix.join('/index.html') },
             ]
         },
+        clientLogLevel: 'warning',  // 开启这个，否则console会打印出很多 HMR 和 WDS 的日志。WDS 就是 webpack-dev-server的简称吗？
+        hot: true,
         quiet: true,
         proxy: {
             '/sss': {
@@ -42,7 +44,8 @@ module.exports = merge(baseConfig, {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedChunksPlugin(),
+        new webpack.HotModuleReplacementPlugin(),  // 只有有了这个plugin，上面的 hot设置才有效？
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: getPath('src/docs/index.html')
@@ -52,6 +55,17 @@ module.exports = merge(baseConfig, {
                 messages: [`Your application is running here: http://localhost:1127`],
             },
             onErrors: undefined
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: function (module) {
+                let res = module.resource;
+                return /node_modules/.test(res) && /\.js$/.test(res)
+            },
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'manifest',
+            minChunks: Infinity,
         })
     ]
 })
