@@ -3,9 +3,11 @@
 </template>
 
 <script>
+
 export default {
   name: "Introduction",
-  label: "使用介绍"
+  label: "使用介绍",
+  mounted() {}
 };
 </script>
 

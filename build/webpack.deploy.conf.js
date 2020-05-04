@@ -1,6 +1,7 @@
 const path = require('path')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base')
+const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const getPath = function (subpath) {

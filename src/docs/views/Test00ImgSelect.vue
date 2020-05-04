@@ -7,7 +7,7 @@
       <code>Upload组件</code>封装而来。除了选择图片，还会自动对图片进行压缩（采用了
       <code>image-compressor.js</code>插件）。
     </p>
-    <EG1 /> 
+    <EG1 />
   </div>
 </template>
 
@@ -17,7 +17,8 @@ import EG1 from "./coms/ImgSelectDoc01";
 export default {
   name: "TestImgSelect",
   label: "ImgSelect 图片选择",
-  components: { EG1 }
+  components: { EG1 },
+  mounted() {}
 };
 </script>
 

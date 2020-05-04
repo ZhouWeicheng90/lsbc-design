@@ -8,10 +8,10 @@ const _executeUpload = function (file, token, mediaType) {
     };
     const _getMimeType = function (mediaType) {
         switch (mediaType) {
-            //  case 1: return ["image/png", "image/jpeg", "image/gif"]
+            // case 1: return ["image/png", "image/jpeg", "image/gif"]
             // case 2: return ["audio/mp3"]
-            case 1: return ["image/jpeg", "image/png", "image/gif"]
-            case 2: return ["audio/mp3","audio/wav","audio/midi"]
+            case 1: return ["image/*"]
+            case 2: return ["audio/*"]
             default: return [];
         }
 
