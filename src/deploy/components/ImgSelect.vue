@@ -5,7 +5,8 @@
     </Modal>
 
     <div
-      v-for="(item, ind) in (imgList||[]).filter(ele=>ele.url)"
+      v-for="(item, ind) in (imgList||[])"
+      v-show="item.url"
       :key="ind"
       class="demo-img"
       :class="equalProportion?'equal-ratio':'full-parent'"

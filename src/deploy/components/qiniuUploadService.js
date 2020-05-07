@@ -19,7 +19,7 @@ const _executeUpload = function (file, token, mediaType) {
     const putExtra = {
         fname: file.name,
         params: {},
-        mimeType: _getMimeType(mediaType)
+        mimeType: null // 类型不再限定
     };
     return new Promise((resolve, reject) => {
         qiniu.upload(file, null, token, putExtra, config).subscribe({
