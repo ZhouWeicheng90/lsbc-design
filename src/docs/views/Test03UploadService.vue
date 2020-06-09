@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>图片上传</h3>
     <ImgSelect :imgList="imgList" ref="imgs" @imgsChange="$forceUpdate()" />
     <Button @click="uplImgPrivate">私有上传单张</Button>&nbsp; &nbsp; &nbsp;
     <Button @click="uplImgPublic">公有上传单张</Button>
@@ -13,6 +14,12 @@
       <br />
       url:{{item.url}}
     </div>
+    <div>
+      <h3>音频上传：</h3>
+      <input type="file" @change="upAudio" accept="audio/*" />
+      <Button @click="upAudioPrivate">私有上传音频</Button>
+      <Button @click="upAudioPublic">公有上传音频</Button>
+    </div>
   </div>
 </template>
 
@@ -25,7 +32,8 @@ export default {
   data() {
     return {
       imgList: [{}, {}, {}],
-      uploadService: null
+      uploadService: null,
+      audioFile: null
     };
   },
   methods: {
@@ -53,6 +61,19 @@ export default {
         this.$refs.imgs.$forceUpdate();
         this.$forceUpdate();
         console.log(this.imgList);
+      });
+    },
+    upAudio(e) {
+      this.audioFile = e.target.files[0];
+    },
+    upAudioPrivate() {
+      this.uploadService.uploadPrivateOne(this.audioFile, 2).then(res => {        
+        console.log("audio private:", res);
+      });
+    },
+    upAudioPublic() {
+      this.uploadService.uploadOne(this.audioFile, 2).then(res => {        
+        console.log("audio public:", res);
       });
     }
   },

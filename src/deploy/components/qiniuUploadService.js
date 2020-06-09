@@ -92,11 +92,12 @@ export default class {
         let reqs = [];
         lines.forEach((line, ind) => {
             reqs.push(this.uploadPrivateOne(line.file, mediaType).then(res => {
-                line.url = res.url;
-                line.key = res.key;
                 line.file = undefined;
                 if (typeof handleFn === 'function') {
                     return handleFn(res, line, ind, lines)
+                } else {
+                    line.url = res.url;
+                    line.key = res.key;
                 }
             }))
         })

@@ -147,6 +147,7 @@ export default {
         // findMatchIndex.length 不为11 说明用户传入了匹配函数，必须是有位置的，即使设了`hasPlace = false`也无效
         this.imgList[index].url = "";
         this.imgList[index].file = undefined;
+        this.imgList[index].key=""
         this.$emit("imgsChange", [index]);
         this.$forceUpdate();
       } else {

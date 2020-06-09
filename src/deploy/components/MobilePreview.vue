@@ -14,10 +14,14 @@
       </div>
     </div>
 
-    <div class="intoolbar">
+    <div class="right-toolbar">
       <Icon v-if="deviceSetable" type="ios-cog" class="icon-btn" @click.stop="showSetting=true" />
       <Icon v-else type="md-refresh" class="icon-btn" title="强制刷新" @click="reRender()" />
       <slot name="right-toolbar"></slot>
+    </div>
+    <div class="bottom-content">
+      <slot name="bottom-content">        
+      </slot>
     </div>
 
     <div class="form" v-show="showSetting" @click.stop>
@@ -87,11 +91,11 @@ export default {
       this.width = +this.inW || 350;
       this.deviceFontSize = +this.inFontSize || 16;
       // step2：校验适配，避免异常情况
-      if (this.deviceWidth < 100) {
-        this.deviceWidth = 100;
+      if (this.deviceWidth < 300) {
+        this.deviceWidth = 300;
       }
-      if (this.deviceHeight < 100) {
-        this.deviceHeight = 100;
+      if (this.deviceHeight < 500) {
+        this.deviceHeight = 500;
       }
       // 预览宽度比实际宽度：只能缩小，不能放大：
       if (this.width > this.deviceWidth) {
@@ -115,36 +119,19 @@ export default {
     closeSetingFn(e) {
       if (this.showSetting) {
         this.showSetting = false;
+        this.reRender();
         e.stopPropagation();
         e.preventDefault();
       }
     }
   },
   beforeMount() {
-    let conf = localStorage.getItem(CACHE_CONFIG_KEY);
-    if (conf) {
-      conf = JSON.parse(conf);
-      this.inDW = conf.dw;
-      this.inDH = conf.dh;
-      this.inW = conf.w;
-      this.inPR = conf.pr;
-      this.inFontSize = conf.font;
-    }
+    localStorage.removeItem(CACHE_CONFIG_KEY);
     this.reRender();
     window.addEventListener("click", this.closeSetingFn);
   },
   beforeDestroy() {
     window.removeEventListener("click", this.closeSetingFn);
-    localStorage.setItem(
-      CACHE_CONFIG_KEY,
-      JSON.stringify({
-        dw: this.inDW,
-        dh: this.inDH,
-        w: this.inW,
-        pr: this.inPR,
-        font: this.inFontSize
-      })
-    );
   }
 };
 </script>
@@ -173,12 +160,12 @@ export default {
 }
 
 /* 右侧相关样式： */
-.intoolbar {
+.right-toolbar {
   z-index: 99;
   margin-left: -@rightBorder;
   width: @rightBorder;
   position: absolute;
-  right: 0;
+  right: -1px;
   top: 0;
   .icon-btn {
     color: #aaa;
@@ -189,6 +176,9 @@ export default {
   .icon-btn:hover {
     color: #e1e1e1;
   }
+}
+.bottom-content {
+  margin-top: 2em;
 }
 
 /* 表单 */
