@@ -1,21 +1,24 @@
 # lsbc-design
 
-> 
-
-## Build Setup
-
-``` bash
-# install dependencies
+## Project setup
+```
 npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production and publish to npm repository
-npm run deploy
-
-# build for document-api pages, useing the demo page
-npm run doc 
 ```
 
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
