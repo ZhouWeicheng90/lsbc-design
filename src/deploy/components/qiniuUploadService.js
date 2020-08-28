@@ -13,8 +13,7 @@ const _executeUpload = function (file, token, mediaType) {
             case 1: return ["image/*"]
             case 2: return ["audio/*"]
             default: return [];
-        }
-
+        }    
     }
     const putExtra = {
         fname: file.name,

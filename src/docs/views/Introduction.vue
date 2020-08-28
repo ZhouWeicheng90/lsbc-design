@@ -1,5 +1,8 @@
 <template>
-  <div>jiesao</div>
+  <div>jiesao
+    <A></A>
+    <B></B>
+  </div>
 </template>
 
 <script>
