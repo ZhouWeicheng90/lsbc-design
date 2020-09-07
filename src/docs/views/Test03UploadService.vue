@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import x from "../../deploy/service.js";
+import x from "../../lib/service.js";
 
 export default {
   name: "TestUploadService",
@@ -50,14 +50,14 @@ export default {
       });
     },
     uplImgsPrivate() {
-      this.uploadService.uploadPrivateMutiple(this.imgList, 1).then(res => {
+      this.uploadService.uploadPrivateMutiple(this.imgList, 1).then(() => {
         this.$refs.imgs.$forceUpdate();
         this.$forceUpdate();
         console.log(this.imgList);
       });
     },
     uplImgsPublic() {
-      this.uploadService.uploadMutiple(this.imgList, 1).then(res => {
+      this.uploadService.uploadMutiple(this.imgList, 1).then(() => {
         this.$refs.imgs.$forceUpdate();
         this.$forceUpdate();
         console.log(this.imgList);

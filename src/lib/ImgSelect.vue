@@ -37,7 +37,7 @@
 import ImageCompressor from "image-compressor.js";
 const loadingIco = "Loading%%=";
 function getImgUrlFromFile(file) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -48,11 +48,12 @@ function getImgUrlFromFile(file) {
 export default {
   props: {
     imgList: {
-      type: Array
+      type: Array,
     },
     findMatchIndex: {
       default() {
         return (a, b, c, d, e, f, g, h, i, j, k) => {
+          console.log(a, b, c, d, e, f, g, i, j, k);
           for (let i = 0; i < this.imgList.length; i++) {
             if (!this.imgList[i].url) {
               return i;
@@ -61,48 +62,48 @@ export default {
           if (this.imgList.length < this.maxlen) {
             this.imgList.push({
               url: "",
-              file: null
+              file: null,
             });
             return this.imgList.length - 1;
           }
           return -1;
         };
-      }
+      },
     },
     maxLength: {
       default: 0,
-      type: Number
+      type: Number,
     },
     hasPlace: {
       default: true,
-      type: Boolean
+      type: Boolean,
     },
 
     hiddeSelectWhenFull: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     equalProportion: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
 
     compressAble: {
       default: true,
-      type: Boolean | Function
+      type: [Boolean, Function],
     },
     showCompressLog: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     compressMaxWidth: {
       type: Number,
-      default: 1600
+      default: 1600,
     },
     compressQuality: {
       type: Number,
-      default: 0.6
-    }
+      default: 0.6,
+    },
   },
   data() {
     return {
@@ -111,7 +112,7 @@ export default {
 
       selectedFiles: [],
       isUploading: false,
-      loading_img_flag: loadingIco
+      loading_img_flag: loadingIco,
     };
   },
   computed: {
@@ -122,7 +123,7 @@ export default {
       if (this.imgList.length < this.maxlen) {
         return true;
       }
-      return (this.imgList || []).some(imgObj => !imgObj.url);
+      return (this.imgList || []).some((imgObj) => !imgObj.url);
     },
     maxlen() {
       if (this.findMatchIndex.length === 11) {
@@ -135,7 +136,7 @@ export default {
         return max;
       }
       return (this.imgList || []).length;
-    }
+    },
   },
   methods: {
     handleView(picObj) {
@@ -147,7 +148,7 @@ export default {
         // findMatchIndex.length 不为11 说明用户传入了匹配函数，必须是有位置的，即使设了`hasPlace = false`也无效
         this.imgList[index].url = "";
         this.imgList[index].file = undefined;
-        this.imgList[index].key=""
+        this.imgList[index].key = "";
         this.$emit("imgsChange", [index]);
         this.$forceUpdate();
       } else {
@@ -194,9 +195,9 @@ export default {
         // this.compressAble && imgObj.file.size > 300 * 1024
         if (compressFlag) {
           reqs.push(
-            this._compress(imgObj.file).then(newFile => {
+            this._compress(imgObj.file).then((newFile) => {
               imgObj.file = newFile;
-              return getImgUrlFromFile(newFile).then(url => {
+              return getImgUrlFromFile(newFile).then((url) => {
                 imgObj.url = url;
                 changeInds.push(ind);
               });
@@ -204,7 +205,7 @@ export default {
           );
         } else {
           reqs.push(
-            getImgUrlFromFile(imgObj.file).then(url => {
+            getImgUrlFromFile(imgObj.file).then((url) => {
               imgObj.url = url;
               changeInds.push(ind);
             })
@@ -223,12 +224,11 @@ export default {
      * @param {File} file
      */
     _compress(file) {
-      const _this = this;
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         new ImageCompressor(file, {
           quality: this.compressQuality,
           maxWidth: this.compressMaxWidth,
-          success: newFile => {
+          success: (newFile) => {
             resolve(newFile);
             if (this.showCompressLog) {
               console.log(
@@ -245,15 +245,15 @@ export default {
           error(err) {
             console.error(err.message);
             resolve(file);
-          }
+          },
         });
       });
-    }
+    },
   },
   beforeMount() {},
   watch: {
-    imgList() {}
-  }
+    imgList() {},
+  },
 };
 </script>
 

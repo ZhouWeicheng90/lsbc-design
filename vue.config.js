@@ -4,6 +4,14 @@ const domain = 'http://test.material.muyuhuajiaoyu.com';
 // const domain = 'http://192.168.8.60';  // 廖顺
 // const domain = 'http://192.168.8.66   // 袁长城
 module.exports = {
+ 
+  css: {
+    loaderOptions: {
+      less: {
+        javascriptEnabled: true
+      }
+    }
+  },
   devServer: {
     proxy: {
       '/material': {
