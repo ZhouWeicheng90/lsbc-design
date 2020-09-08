@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import x from "../../lib/service.js";
+import {UploadService} from "../../lib/service.js";
 
 export default {
   name: "TestUploadService",
@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    this.uploadService = new x.UploadService(() => {
+    this.uploadService = new UploadService(() => {
       return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzg0MTg5ODAsInVzZXJuYW1lIjoiYWRtaW4ifQ.YiWYvCkOp47uWS5KfwNk8vYQuexP482WHtfrU3g54Kk";
     }, "/sss");
   }

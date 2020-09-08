@@ -1,1 +1,1 @@
-export * from './qiniuUploadService'
+export * from './services/qiniuUploadService'

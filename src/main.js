@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // import App from './docs/App.vue'
-import App2 from './docs/App2.vue'
+import App2 from './docs/App2'
 import Router from 'vue-router'
 import routes from './docs/routes'
 import iView from 'view-design';

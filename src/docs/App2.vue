@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ImgSelect from "../lib/ImgSelect.vue";
+import ImgSelect from "../lib/components/img-select/ImgSelect";
 export default {
   components: { ImgSelect },
   data() {

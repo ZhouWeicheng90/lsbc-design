@@ -1,6 +1,6 @@
 {
   "name": "lsbc-design",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "files": [
     "src/lib"
   ],
@@ -19,16 +19,18 @@
   "peerDependencies": {
     "core-js": "*",
     "vue": "*",
-    "image-compressor.js": "*"
+    "axios": "*"
+    
   },
   "dependencies": {
-    "axios": "*",
-    "qiniu-js": "*"
+    "image-compressor.js": "*",
+    "qiniu-js": "*"    
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "axios": "^0.20.0",
     "babel-eslint": "^10.1.0",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
@@ -36,6 +38,7 @@
     "image-compressor.js": "^1.1.4",
     "less": "^3.12.2",
     "less-loader": "^5.0.0",
+    "qiniu-js": "^3.1.1",
     "view-design": "^4.3.2",
     "vue": "^2.6.11",
     "vue-router": "^3.4.3",
