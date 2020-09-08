@@ -1,5 +1,5 @@
 
-import ImgSelect from './ImgSelect'
+import ImgSelect from './ImgSelect.vue'
 import MobilePreview from './MobilePreview'
 export default {
     install: vue => {

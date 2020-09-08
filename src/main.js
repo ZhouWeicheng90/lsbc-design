@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import App from './docs/App.vue'
+// import App from './docs/App.vue'
+import App2 from './docs/App2.vue'
 import Router from 'vue-router'
 import routes from './docs/routes'
 import iView from 'view-design';
@@ -22,6 +23,6 @@ let router = new Router({
 Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(App),
+  render: h => h(App2),
   router
 }).$mount('#app')
