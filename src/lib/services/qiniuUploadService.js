@@ -69,6 +69,11 @@ function _executeUpload(file, token, onProgress = undefined) {
         });
     });
 }
+
+/**
+ * @typedef  {import("axios").AxiosInstance} AxiosInstance
+ */
+
 /**
  * 七牛云上传服务（构造器）：
  ** 大文件上传分片大小: 4M（4\*1024\*1024B）
@@ -82,8 +87,7 @@ function _executeUpload(file, token, onProgress = undefined) {
  */
 export class UploadService {
     /** 
-     
-     * @param { import("axios").AxiosInstance } axiosInstance 
+     * @param { AxiosInstance } axiosInstance 
      */
     constructor(axiosInstance) {
         if (!axiosInstance || !axiosInstance.interceptors || !axiosInstance.get || !axiosInstance.post || typeof axiosInstance !== 'function') {
