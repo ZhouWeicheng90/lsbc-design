@@ -1,28 +1,30 @@
 // @ts-check
-import ImageCompressor from "image-compressor.js";
+import ImageCompressor from "compressorjs";
 /**
- * @typedef {{enable:boolean|{(file:File):boolean},showLog:boolean,maxWidth:number,quality:number}} CompressConfig
+ * @typedef {import("compressorjs").default.Options&{enable:boolean|{(file:File):boolean},showLog:boolean}} CompressConfig
  */
-
 /**
  * @type {CompressConfig}
+ * 更多配置参考：https://www.npmjs.com/package/compressorjs
  */
-const defaultCompressConfig = {
+export const defaultCompressConfig = {
     enable: false, // boolean | function
     showLog: false, //boolean
     maxWidth: 1600,
-    quality: 0.6
+    quality: 0.6,
+    convertSize: 2 << 20, // 超过2M的png，将被转换成jpg
 }
+
 
 /**
  * 
  * @param {*} config 
- * @param {'enable'|'showLog'|'maxWidth'|'quality'} key 
- * @param {'boolean'|'number'} hint
+ * @param {'enable'|'showLog'|'maxWidth'|'quality'|'convertSize'|'mimeType'} key 
+ * @param {'boolean'|'number'|'string'} hint
  */
 function validateKey(config, key, hint) {
     if (config[key] !== undefined && typeof config[key] !== hint) {
-        throw new Error(`ImgSelect's prop 'compress' error: '${key}' field must be a ${hint} value`)
+        throw new Error(`ImgSelect's prop 'compress' error: '${key}' field must be a ${hint} value,but got ${typeof config[key]} '${config[key]}'`)
     }
 }
 /**
@@ -45,6 +47,8 @@ function initConfig(config) {
     }
     validateKey(config, 'maxWidth', 'number')
     validateKey(config, 'quality', 'number')
+    validateKey(config, 'convertSize', 'number')
+    validateKey(config, 'mimeType', 'string')
     return Object.assign({}, defaultCompressConfig, config)
 }
 
@@ -54,33 +58,38 @@ export const _mixin = {
             type: [Boolean, Function, Object],
         },
     },
-    created() {
-        this.compressConf = initConfig(this.compress);
+    data() {
+
     },
     methods: {
+        /**
+         * @param {File} file 
+         */
         async compressFile(file) {
-            let compressFlag = this.compressConf.enable
+            let conf = initConfig(this.compress);
+            let compressFlag = conf.enable
+            let showLog = conf.showLog
             if (typeof compressFlag === 'function') {
                 compressFlag = compressFlag(file)
             }
             if (!compressFlag) {
                 return file
             }
+            conf.enable = conf.showLog = false
             return new Promise((resolve) => {
                 new ImageCompressor(file, {
-                    quality: this.compressConf.quality,
-                    maxWidth: this.compressConf.maxWidth,
+                    ...conf,
                     success: (newFile) => {
                         resolve(newFile);
-                        if (this.compressConf.showLog) {
+                        if (showLog) {
                             console.log(
                                 file.name +
-                                ": 压缩前 " +
+                                ": %c压缩前 " +
                                 (file.size >> 10) +
                                 "KB  压缩后 " +
                                 (newFile.size >> 10) +
-                                "KB  压缩比率 " +
-                                (newFile.size / file.size).toFixed(6)
+                                "KB  %c压缩率 " +
+                                ((file.size - newFile.size) / file.size).toFixed(4), 'color:red', 'color:blue'
                             );
                         }
                     },

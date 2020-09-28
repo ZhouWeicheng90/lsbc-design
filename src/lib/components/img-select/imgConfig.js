@@ -11,11 +11,10 @@
 /**
  * @type {ImgSelectConfig}
  */
-const defautDataConfig = {
+export const defautDataConfig = {
     key: "key",
     url: "url",
     file: "__file",
-
     matchBy: function (file, list) {
         // function | Object {maxLen:8}  实在没有理由提供一个hasPlace，以满足无意义的场景：可以扩展到maxLen，却保留位置 —— 这种情况下，传入前 提前追加好就行了！
         for (let i = 0; i < list.length; i++) {

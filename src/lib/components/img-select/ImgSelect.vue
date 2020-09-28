@@ -1,5 +1,5 @@
 <template>
-  <div style="display:inline-block;">
+  <div style="display: inline-block">
     <Modal title="图片预览" v-model="modal4preview" :width="600">
       <img :src="reviewImgUrl" style="max-width: 100%" />
     </Modal>
@@ -9,12 +9,19 @@
       v-show="item[conf.url]"
       :key="ind"
       class="demo-img"
-      :class="conf.equalProportion?'equal-ratio':'full-parent'"
-      :style="{backgroundImage:item[conf.url]?`url(${item[conf.url]})`:''}"
+      :class="conf.equalProportion ? 'equal-ratio' : 'full-parent'"
+      :style="{
+        backgroundImage: item[conf.url] ? `url(${item[conf.url]})` : '',
+      }"
     >
       <div class="demo-img-cover">
         <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
-        <Poptip title="确定删除吗？" confirm transfer @on-ok="handleRemove(ind)">
+        <Poptip
+          title="确定删除吗？"
+          confirm
+          transfer
+          @on-ok="handleRemove(ind)"
+        >
           <Icon type="ios-trash-outline"></Icon>
         </Poptip>
       </div>
@@ -24,11 +31,15 @@
       multiple
       action="x"
       type="drag"
-      style="display: inline-block;width:58px;"
-      accept="image/*"
-      v-show="!full||!conf.hiddeSelectWhenFull"
+      style="display: inline-block; width: 58px"
+      :accept="accept"
+      v-show="!full || !conf.hiddeSelectWhenFull"
     >
-      <Icon style="height:58px;line-height: 58px;" type="ios-camera" size="20"></Icon>
+      <Icon
+        style="height: 58px; line-height: 58px"
+        type="ios-camera"
+        size="20"
+      ></Icon>
     </Upload>
   </div>
 </template>
@@ -54,11 +65,13 @@ export default {
         return true;
       },
     },
+    accept: {
+      default: "image/*",
+    },
   },
   data() {
     return {
       conf: null,
-      compressConf: null,
       reviewImgUrl: "",
       modal4preview: false,
       isUploading: false,
@@ -92,7 +105,7 @@ export default {
         let ind = this.findMatchIndex(file, this.imgHolders);
         if (ind >= 0) {
           this.imgHolders[ind][loadingFile] = file;
-          this.imgHolders[ind][this.conf.url] = 'notnull';
+          this.imgHolders[ind][this.conf.url] = "notnull";
           if (!this.isUploading) {
             this.isUploading = true;
             setTimeout(() => {

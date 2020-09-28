@@ -1,6 +1,6 @@
 {
   "name": "lsbc-design",
-  "version": "0.8.3",
+  "version": "0.8.9",
   "files": [
     "src/lib"
   ],
@@ -14,17 +14,17 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "publish": "npm publish"
+    "types": "tsc --declaration --allowJs src/lib/components/img-select/index.js src/lib/service.js",
+    "pub": "npm publish"
   },
   "peerDependencies": {
     "core-js": "*",
     "vue": "*",
     "axios": "*"
-    
   },
   "dependencies": {
-    "image-compressor.js": "*",
-    "qiniu-js": "*"    
+    "compressorjs": "*",
+    "qiniu-js": "*"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -32,10 +32,10 @@
     "@vue/cli-service": "~4.5.0",
     "axios": "^0.20.0",
     "babel-eslint": "^10.1.0",
+    "compressorjs": "^1.0.6",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "image-compressor.js": "^1.1.4",
     "less": "^3.12.2",
     "less-loader": "^5.0.0",
     "qiniu-js": "^3.1.1",
