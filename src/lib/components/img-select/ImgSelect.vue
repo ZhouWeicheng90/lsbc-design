@@ -32,7 +32,7 @@
       action="x"
       type="drag"
       style="display: inline-block; width: 58px"
-      :accept="accept"
+      :accept="conf.accept"
       v-show="!full || !conf.hiddeSelectWhenFull"
     >
       <Icon
@@ -64,9 +64,6 @@ export default {
         }
         return true;
       },
-    },
-    accept: {
-      default: "image/*",
     },
   },
   data() {

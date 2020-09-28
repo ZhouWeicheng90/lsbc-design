@@ -5,7 +5,7 @@
  * @typedef {{(file:File,list:object[]):number}|{maxLen:number}} MatchDef
  */
 /**
- * @typedef {{key:KeyDef,url:KeyDef,file:KeyDef,matchBy:MatchDef,equalProportion:boolean,hiddeSelectWhenFull:boolean}} ImgSelectConfig
+ * @typedef {{key:KeyDef,url:KeyDef,file:KeyDef,matchBy:MatchDef,equalProportion:boolean,hiddeSelectWhenFull:boolean,accept:string}} ImgSelectConfig
  */
 /**
  * @type {ImgSelectConfig}
@@ -49,4 +49,5 @@ export type ImgSelectConfig = {
     matchBy: MatchDef;
     equalProportion: boolean;
     hiddeSelectWhenFull: boolean;
+    accept: string;
 };

@@ -1,6 +1,6 @@
 {
   "name": "lsbc-design",
-  "version": "0.8.9",
+  "version": "0.8.11",
   "files": [
     "src/lib"
   ],
@@ -14,7 +14,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "types": "tsc --declaration --allowJs src/lib/components/img-select/index.js src/lib/service.js",
+    "types": "tsc --declaration --allowJs src/lib/globalConfig.js src/lib/service.js",
     "pub": "npm publish"
   },
   "peerDependencies": {

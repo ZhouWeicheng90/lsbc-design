@@ -56,6 +56,9 @@ export const _mixin = {
     props: {
         compress: {
             type: [Boolean, Function, Object],
+            default(){
+                return {}
+            }
         },
     },
     data() {

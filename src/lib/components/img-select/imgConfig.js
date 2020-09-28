@@ -6,7 +6,7 @@
  * @typedef {{(file:File,list:object[]):number}|{maxLen:number}} MatchDef
  */
 /**
- * @typedef {{key:KeyDef,url:KeyDef,file:KeyDef,matchBy:MatchDef,equalProportion:boolean,hiddeSelectWhenFull:boolean}} ImgSelectConfig
+ * @typedef {{key:KeyDef,url:KeyDef,file:KeyDef,matchBy:MatchDef,equalProportion:boolean,hiddeSelectWhenFull:boolean,accept:string}} ImgSelectConfig
  */
 /**
  * @type {ImgSelectConfig}
@@ -26,6 +26,7 @@ export const defautDataConfig = {
     },
     equalProportion: false,
     hiddeSelectWhenFull: false,
+    accept:'image/jpeg'
 };
 
 /**
@@ -77,7 +78,8 @@ function initConfig(config) {
         file: obj.file,
         matchBy: obj.matchBy,
         equalProportion: obj.equalProportion,
-        hiddeSelectWhenFull: obj.hiddeSelectWhenFull
+        hiddeSelectWhenFull: obj.hiddeSelectWhenFull,
+        accept:obj.accept||'img/*'
     }
 }
 
