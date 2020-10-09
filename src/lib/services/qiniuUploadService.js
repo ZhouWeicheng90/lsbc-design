@@ -155,12 +155,24 @@ export class UploadService {
         const params = Object.assign({
             key: uploadRes.key,
             resouceName: file.name,
-            size: file.size
+            size: file.size,
+            duration: 0
         }, isPrivate ? {
             mediaType,
             mediaId: tokenRes.mediaId,
             mediaKey: tokenRes.mediaKey
         } : { showPub: true })
+
+        if (mediaType === 2 || mediaType === 3) {
+            params.duration = await new Promise(resolve => {
+                const player = mediaType === 2 ? new Audio() : document.createElement('video')
+                player.src = window.URL.createObjectURL(file)
+                player.onloadedmetadata = e => {
+                    resolve(player.duration * 1000)
+                    window.URL.revokeObjectURL(player.src)
+                }
+            })
+        }
         /**
          * @typedef {{url:string,key:string}} UrlRes
          * @type {UrlRes|AxiosRes<UrlRes>}
