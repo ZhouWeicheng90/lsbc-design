@@ -1,6 +1,6 @@
 {
   "name": "lsbc-design",
-  "version": "0.8.13",
+  "version": "0.8.14",
   "files": [
     "src/lib",
     "升级指南.md"

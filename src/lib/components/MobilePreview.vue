@@ -3,25 +3,41 @@
     <div
       class="preview-content"
       ref="container"
-      :style="{width:width+'px',height:height+'px'}"
+      :style="{ width: width + 'px', height: height + 'px' }"
       @scroll="onScroll"
     >
       <div
         ref="inner"
-        :style="{fontSize:deviceFontSize+'px',transform: `scale(${scale})`,transformOrigin:`left top`,width:deviceWidth+'px',height:deviceHeight+'px'}"
+        :style="{
+          fontSize: deviceFontSize + 'px',
+          transform: `scale(${scale})`,
+          transformOrigin: `left top`,
+          width: deviceWidth + 'px',
+          height: deviceHeight + 'px',
+        }"
       >
         <slot></slot>
       </div>
     </div>
 
     <div class="right-toolbar">
-      <Icon v-if="deviceSetable" type="ios-cog" class="icon-btn" @click.stop="showSetting=true" />
-      <Icon v-else type="md-refresh" class="icon-btn" title="强制刷新" @click="reRender()" />
+      <Icon
+        v-if="deviceSetable"
+        type="ios-cog"
+        class="icon-btn"
+        @click.stop="showSetting = true"
+      />
+      <Icon
+        v-else
+        type="md-refresh"
+        class="icon-btn"
+        title="强制刷新"
+        @click="reRender()"
+      />
       <slot name="right-toolbar"></slot>
     </div>
-    <div class="bottom-content">
-      <slot name="bottom-content">        
-      </slot>
+    <div class="bottom-toolbar">
+      <slot name="bottom-toolbar"> </slot>
     </div>
 
     <div class="form" v-show="showSetting" @click.stop>
@@ -56,8 +72,8 @@ export default {
   props: {
     deviceSetable: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -75,7 +91,7 @@ export default {
 
       scale: 1,
       showSetting: false,
-      maxScroll: 0
+      maxScroll: 0,
     };
   },
   methods: {
@@ -107,7 +123,7 @@ export default {
       this.scale = this.width / this.deviceWidth;
       this.$emit("change-screen", {
         width: this.deviceWidth,
-        height: this.deviceHeight
+        height: this.deviceHeight,
       });
 
       setTimeout(() => {
@@ -123,7 +139,7 @@ export default {
         e.stopPropagation();
         e.preventDefault();
       }
-    }
+    },
   },
   beforeMount() {
     localStorage.removeItem(CACHE_CONFIG_KEY);
@@ -132,11 +148,12 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener("click", this.closeSetingFn);
-  }
+  },
 };
 </script>
 <style scoped lang='less'>
 @rightBorder: 41px;
+@bottomBorder: 46px;
 .preview-wrapper {
   display: inline-block;
   width: min-content;
@@ -146,7 +163,7 @@ export default {
   box-sizing: content-box;
   border-style: solid;
   border-color: #333;
-  border-width: 39px @rightBorder 46px 42px;
+  border-width: 39px @rightBorder @bottomBorder 42px;
   border-radius: 20px;
   box-shadow: 0 0 3px black, 0 0 16px black, 0 0 23px black, 0 0 2px 4px white,
     0 0 1px 5px black;
@@ -177,8 +194,12 @@ export default {
     color: #e1e1e1;
   }
 }
-.bottom-content {
-  margin-top: 2em;
+.bottom-toolbar {
+  position: absolute;
+  z-index: 99;
+  margin-top: -@bottomBorder;
+  height: @bottomBorder;
+  width: 100%;
 }
 
 /* 表单 */

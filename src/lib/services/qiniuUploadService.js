@@ -167,7 +167,7 @@ export class UploadService {
             params.duration = await new Promise(resolve => {
                 const player = mediaType === 2 ? new Audio() : document.createElement('video')
                 player.src = window.URL.createObjectURL(file)
-                player.onloadedmetadata = e => {
+                player.onloadedmetadata = () => {
                     resolve(player.duration * 1000)
                     window.URL.revokeObjectURL(player.src)
                 }
